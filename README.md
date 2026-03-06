@@ -1,2 +1,2 @@
-# minjeee1.github.io
+# minje-sung.github.io
 AI Agent Developer Portfolio
