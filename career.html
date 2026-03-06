@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職務経歴書 — Sung Minje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: rgba(255,255,255,0.07);
+    --accent: #7c6aff;
+    --accent2: #ff6a9c;
+    --accent3: #6affda;
+    --text: #e8e8f0;
+    --text-muted: #6b6b80;
+    --text-dim: #3a3a50;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,106,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,106,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .nav-logo-sep { color: var(--text-dim); font-weight: 400; letter-spacing: 0.1em; }
+
+  .nav-back {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--text); }
+
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.08;
+  }
+  .orb-1 { width: 500px; height: 500px; background: var(--accent2); bottom: 100px; left: -100px; }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 120px 40px 100px;
+  }
+
+  .page-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .page-label::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 60px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+
+  .page-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 60px;
+  }
+
+  /* SUMMARY */
+  .summary-box {
+    padding: 28px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 48px;
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.9;
+  }
+  .summary-box strong { color: var(--text); font-weight: 500; }
+
+  /* CAREER SECTION */
+  .career-section {
+    margin-bottom: 60px;
+  }
+
+  .career-section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .career-section-label::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .career-item {
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .career-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0.5;
+  }
+
+  .career-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .career-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .career-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+
+  .career-company {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .career-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.9;
+    margin-bottom: 20px;
+  }
+
+  .career-achievements {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .career-achievements li {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .career-achievements li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 12px;
+  }
+
+  .career-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .career-tag {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(124,106,255,0.06);
+    border: 1px solid rgba(124,106,255,0.2);
+    color: var(--accent);
+  }
+
+  /* SKILLS TABLE */
+  .skills-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .skills-table tr {
+    border-bottom: 1px solid var(--border);
+  }
+  .skills-table tr:last-child { border-bottom: none; }
+
+  .skills-table td {
+    padding: 14px 0;
+    font-size: 14px;
+    vertical-align: top;
+  }
+
+  .skills-table td:first-child {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    width: 160px;
+    padding-right: 20px;
+  }
+
+  .skills-table td:last-child {
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  .skill-level-high { color: var(--text); font-weight: 500; }
+
+  .section-box {
+    padding: 28px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+
+  .notice {
+    margin-top: 48px;
+    padding: 20px 28px;
+    border: 1px solid rgba(124,106,255,0.2);
+    border-radius: 12px;
+    background: rgba(124,106,255,0.04);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 16px 24px; }
+    main { padding: 100px 24px 60px; }
+    .career-header { flex-direction: column; gap: 4px; }
+    .skills-table td:first-child { width: 120px; }
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">SUNG MINJE <span class="nav-logo-sep">/ PORTFOLIO</span></a>
+  <a href="index.html" class="nav-back">← ポートフォリオに戻る</a>
+</nav>
+
+<main>
+  <div class="page-label">Documents</div>
+  <h1 class="page-title">職務経歴書</h1>
+  <p class="page-subtitle">Career Detail — Sung Minje</p>
+
+  <!-- 自己PR -->
+  <div class="summary-box">
+    広告代理店でデータサイエンティストとして<strong>マーケティングデータの分析・予測モデル構築・ダッシュボード設計</strong>を担当してきました。
+    AIエージェント技術の急速な進化を目の当たりにし、「分析して提示する」ツールから
+    「<strong>自律的に判断して実行する</strong>」エージェントへの転換点にいると確信。
+    OpenAI Agents SDK・Google ADK・LangGraph を用いた実務向けAIエージェント開発へのキャリアチェンジを目指しています。
+  </div>
+
+  <!-- 職務経歴 -->
+  <div class="career-section">
+    <div class="career-section-label">職務経歴</div>
+
+    <div class="career-item">
+      <div class="career-header">
+        <div class="career-role">データサイエンティスト</div>
+        <div class="career-period">2022年 — 現在</div>
+      </div>
+      <div class="career-company">広告代理店（<span style="color:var(--text-dim)">社名は応募時に開示</span>） — 東京</div>
+      <p class="career-desc">
+        大手クライアントのマーケティングデータを担当。データ基盤の整備から予測モデルの実装・運用まで一気通貫で対応。
+        Python・SQL・BigQueryを中心とした分析環境でチームの生産性向上に貢献。
+      </p>
+      <ul class="career-achievements">
+        <li>顧客行動予測モデルの構築・本番運用（精度改善率 <span style="color:var(--text-dim)">—%</span>）</li>
+        <li>Tableauを用いた経営ダッシュボードの設計・社内展開</li>
+        <li>レポート自動化によって週次作業工数を削減</li>
+        <li>社内インタビュー掲載（<a href="https://hakusuku.jp/recruit/person/person-45/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">hakusuku.jp ↗</a>）</li>
+      </ul>
+      <div class="career-tags">
+        <span class="career-tag">Python</span>
+        <span class="career-tag">SQL</span>
+        <span class="career-tag">BigQuery</span>
+        <span class="career-tag">Tableau</span>
+        <span class="career-tag">scikit-learn</span>
+        <span class="career-tag">Pandas</span>
+      </div>
+    </div>
+
+    <div class="career-item">
+      <div class="career-header">
+        <div class="career-role">データアナリスト</div>
+        <div class="career-period">2020年 — 2022年</div>
+      </div>
+      <div class="career-company">マーケティング会社（<span style="color:var(--text-dim)">社名は応募時に開示</span>）</div>
+      <p class="career-desc">
+        広告効果測定・ABテスト設計・定期レポートの自動化を担当。データドリブンな意思決定文化の醸成に貢献。
+      </p>
+      <ul class="career-achievements">
+        <li>ABテスト設計・統計的有意性の検証フレームワーク構築</li>
+        <li>定期レポートのPython自動化（月次 → 週次化を実現）</li>
+        <li>Tableau経営ダッシュボードの設計・導入支援</li>
+      </ul>
+      <div class="career-tags">
+        <span class="career-tag">Python</span>
+        <span class="career-tag">SQL</span>
+        <span class="career-tag">Tableau</span>
+        <span class="career-tag">A/B Testing</span>
+        <span class="career-tag">Google Analytics</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- スキル -->
+  <div class="career-section">
+    <div class="career-section-label">スキルセット</div>
+    <div class="section-box">
+      <table class="skills-table">
+        <tr>
+          <td>AI Frameworks</td>
+          <td>
+            <span class="skill-level-high">OpenAI Agents SDK</span> /
+            <span class="skill-level-high">Google ADK</span> /
+            <span class="skill-level-high">LangGraph</span> /
+            LangChain / CrewAI
+          </td>
+        </tr>
+        <tr>
+          <td>LLM APIs</td>
+          <td>GPT-4o / Gemini / Claude API / Tavily / Firecrawl</td>
+        </tr>
+        <tr>
+          <td>Data & Analytics</td>
+          <td>
+            <span class="skill-level-high">Python</span> /
+            <span class="skill-level-high">SQL</span> /
+            Pandas / scikit-learn / BigQuery / Tableau
+          </td>
+        </tr>
+        <tr>
+          <td>Monitoring</td>
+          <td>LangSmith / OpenAI Traces / ADK Web UI / LangGraph Studio</td>
+        </tr>
+        <tr>
+          <td>Backend & Deploy</td>
+          <td>Streamlit / FastAPI / Docker / GitHub Actions</td>
+        </tr>
+        <tr>
+          <td>言語</td>
+          <td>
+            <span class="skill-level-high">韓国語（母語）</span> /
+            <span class="skill-level-high">日本語（準ネイティブ）</span> /
+            英語（ビジネスレベル）
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 現在取り組んでいること -->
+  <div class="career-section">
+    <div class="career-section-label">現在の取り組み</div>
+    <div class="section-box">
+      <p style="font-size:14px;color:var(--text-muted);line-height:1.9;">
+        OpenAI Agents SDK・Google ADK・LangGraph の3フレームワークを用いて、
+        実際にデプロイ可能なAIエージェントを開発中。
+        各フレームワークの特性を比較しながら、実務課題に最適なアーキテクチャを探求しています。<br><br>
+        詳細は <a href="index.html#agents" style="color:var(--accent);text-decoration:none;">ポートフォリオの AI Agents セクション →</a> をご参照ください。
+      </p>
+    </div>
+  </div>
+
+  <div class="notice">
+    ※ このページは作業中です。一部フィールドは実際の情報に差し替え予定です。<br>
+    ※ This page is a work in progress. Some fields are placeholders to be updated.
+  </div>
+</main>
+
+</body>
+</html>

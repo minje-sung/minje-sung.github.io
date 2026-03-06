@@ -83,6 +83,12 @@
     text-transform: uppercase;
   }
 
+  .nav-logo-sep {
+    color: var(--text-dim);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+
   .nav-right {
     display: flex;
     align-items: center;
@@ -152,14 +158,31 @@
     flex: 1;
   }
 
-  .hero-photo {
-    width: 300px;
-    height: 400px;
-    border-radius: 24px;
-    overflow: hidden;
+  .hero-photo-ring {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    padding: 2px;
     flex-shrink: 0;
-    border: 1px solid var(--border);
-    box-shadow: 0 0 80px rgba(124,106,255,0.12);
+    position: relative;
+  }
+
+  .hero-photo-ring::before {
+    content: '';
+    position: absolute;
+    inset: -32px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,106,255,0.14) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .hero-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
     position: relative;
   }
 
@@ -167,15 +190,15 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(15%);
+    filter: grayscale(10%);
   }
 
   .hero-photo::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, transparent 60%, rgba(10,10,15,0.4));
-    border-radius: 24px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 60% 80%, rgba(10,10,15,0.25), transparent 60%);
   }
 
   .hero-tag {
@@ -265,6 +288,34 @@
     border-color: var(--accent);
     color: var(--text);
     transform: translateY(-2px);
+  }
+
+  .hero-links {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+
+  .btn-link:hover { color: var(--text); }
+
+  .btn-link-icon {
+    color: var(--accent);
+    font-style: normal;
   }
 
   /* SCROLL INDICATOR */
@@ -746,98 +797,6 @@
     color: var(--accent);
   }
 
-  /* MEDIA / INTERVIEW */
-  .media-card {
-    display: flex;
-    gap: 40px;
-    align-items: center;
-    padding: 40px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    text-decoration: none;
-    color: var(--text);
-    transition: all 0.3s;
-    max-width: 800px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .media-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .media-card:hover {
-    border-color: rgba(255,255,255,0.15);
-    background: var(--surface2);
-    transform: translateY(-4px);
-  }
-
-  .media-card:hover::before { opacity: 1; }
-
-  .media-source {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .media-source-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    display: inline-block;
-  }
-
-  .media-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 12px;
-  }
-
-  .media-excerpt {
-    font-size: 14px;
-    color: var(--text-muted);
-    line-height: 1.8;
-    margin-bottom: 20px;
-  }
-
-  .media-cta {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-  }
-
-  .media-logo {
-    font-size: 56px;
-    flex-shrink: 0;
-    width: 100px;
-    height: 100px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   /* DIVIDER */
   .section-divider {
     max-width: 1200px;
@@ -896,14 +855,13 @@
     .nav-links { display: none; }
     .hero, section { padding-left: 24px; padding-right: 24px; }
     .hero { flex-direction: column; justify-content: center; gap: 40px; padding-top: 100px; }
-    .hero-photo { width: 100%; max-width: 320px; height: 300px; align-self: center; }
+    .hero-photo-ring { width: 240px; height: 240px; align-self: center; }
     .about-grid { grid-template-columns: 1fr; }
     .skills-grid { grid-template-columns: 1fr 1fr; }
     .agents-grid { grid-template-columns: 1fr; }
     .contact-inner { grid-template-columns: 1fr; gap: 40px; }
     .exp-item { grid-template-columns: 1fr; gap: 8px; }
-    .media-card { flex-direction: column; gap: 24px; }
-    footer { flex-direction: column; gap: 12px; text-align: center; }
+footer { flex-direction: column; gap: 12px; text-align: center; }
   }
 
   @media (max-width: 600px) {
@@ -934,7 +892,7 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">SUNG MINJE</div>
+  <div class="nav-logo">SUNG MINJE <span class="nav-logo-sep">/ PORTFOLIO</span></div>
   <div class="nav-right">
     <ul class="nav-links">
       <li><a href="#about">
@@ -1000,9 +958,31 @@
         <span data-lang="ko">연락하기</span>
       </a>
     </div>
+    <div class="hero-links">
+      <a href="https://hakusuku.jp/recruit/person/person-45/" target="_blank" rel="noopener" class="btn-link">
+        <i class="btn-link-icon">↗</i>
+        <span data-lang="ja">社内インタビュー記事</span>
+        <span data-lang="en">Employee Interview</span>
+        <span data-lang="ko">사내 인터뷰 기사</span>
+      </a>
+      <a href="resume.html" class="btn-link">
+        <i class="btn-link-icon">↗</i>
+        <span data-lang="ja">履歴書</span>
+        <span data-lang="en">Resume</span>
+        <span data-lang="ko">이력서</span>
+      </a>
+      <a href="career.html" class="btn-link">
+        <i class="btn-link-icon">↗</i>
+        <span data-lang="ja">職務経歴書（詳細）</span>
+        <span data-lang="en">Career Detail</span>
+        <span data-lang="ko">직무경력서 상세</span>
+      </a>
+    </div>
   </div>
-  <div class="hero-photo">
-    <img src="https://picsum.photos/seed/minje/600/800" alt="Sung Minje">
+  <div class="hero-photo-ring">
+    <div class="hero-photo">
+      <img src="https://media.licdn.com/dms/image/v2/D5603AQEDa2RTlwc9HA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1680077852551?e=1774483200&v=beta&t=L0mvzjJj8qw8oLbAKsKr-5CshpV2p3gzLgZWiomZnB8" alt="Sung Minje">
+    </div>
   </div>
   <div class="scroll-hint">SCROLL</div>
 </div>
@@ -1116,47 +1096,6 @@
       </div>
     </div>
   </div>
-</section>
-
-<!-- MEDIA / INTERVIEW -->
-<div class="section-divider"><hr></div>
-<section id="media" class="fade-in">
-  <div class="section-label">
-    <span data-lang="ja">メディア掲載</span>
-    <span data-lang="en">Press / Interview</span>
-    <span data-lang="ko">미디어 게재</span>
-  </div>
-  <h2 class="section-title">
-    <span data-lang="ja">社員インタビュー</span>
-    <span data-lang="en">Interview</span>
-    <span data-lang="ko">사내 인터뷰</span>
-  </h2>
-  <a href="https://hakusuku.jp/recruit/person/person-45/" target="_blank" rel="noopener" class="media-card">
-    <div class="media-logo">🎙️</div>
-    <div>
-      <div class="media-source">
-        <span class="media-source-dot"></span>
-        <span data-lang="ja">株式会社白数致知 — 社員インタビュー</span>
-        <span data-lang="en">Hakusuku Inc. — Employee Interview</span>
-        <span data-lang="ko">하쿠스쿠 주식회사 — 사원 인터뷰</span>
-      </div>
-      <div class="media-title">
-        <span data-lang="ja">「データから、人へ。AIが変える仕事の未来。」</span>
-        <span data-lang="en">"From Data to People. The Future of Work, Shaped by AI."</span>
-        <span data-lang="ko">「데이터에서 사람으로. AI가 바꾸는 일의 미래.」</span>
-      </div>
-      <p class="media-excerpt">
-        <span data-lang="ja">データサイエンティストとしてのキャリア、AIエージェント開発への転向、そして日本での挑戦について語ったインタビューです。</span>
-        <span data-lang="en">An interview about my career as a data scientist, my transition to AI agent development, and my journey in Japan.</span>
-        <span data-lang="ko">데이터 사이언티스트로서의 커리어, AI 에이전트 개발로의 전향, 그리고 일본에서의 도전에 대해 이야기한 인터뷰입니다.</span>
-      </p>
-      <div class="media-cta">
-        <span data-lang="ja">記事を読む →</span>
-        <span data-lang="en">Read Article →</span>
-        <span data-lang="ko">인터뷰 보기 →</span>
-      </div>
-    </div>
-  </a>
 </section>
 
 <!-- EXPERIENCE -->
