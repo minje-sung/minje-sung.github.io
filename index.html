@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sung Minje — AI Agent Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: rgba(255,255,255,0.07);
+    --accent: #7c6aff;
+    --accent2: #ff6a9c;
+    --accent3: #6affda;
+    --text: #e8e8f0;
+    --text-muted: #6b6b80;
+    --text-dim: #3a3a50;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body.lang-ko { font-family: 'Noto Sans KR', sans-serif; }
+  body.lang-en { font-family: 'Syne', sans-serif; }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* GRID BACKGROUND */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,106,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,106,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* LANG SWITCHER */
+  .lang-switcher {
+    display: flex;
+    gap: 4px;
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .lang-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-inner {
+    max-width: 800px;
+  }
+
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+
+  .hero-name .highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 540px;
+    margin-bottom: 48px;
+    line-height: 1.8;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary:hover {
+    background: #9580ff;
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--text-dim), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 40px;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 60px;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-size: 15px;
+    line-height: 1.9;
+  }
+
+  .about-text p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .info-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .info-value {
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  /* EXPERIENCE */
+  .exp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 40px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .exp-item:last-child { border-bottom: none; }
+
+  .exp-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding-top: 4px;
+  }
+
+  .exp-right {}
+
+  .exp-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .exp-company {
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .exp-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s;
+  }
+
+  .skill-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    background: var(--surface2);
+  }
+
+  .skill-category {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .skill-tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .skill-tag.highlight {
+    border-color: rgba(124,106,255,0.4);
+    color: var(--accent);
+    background: rgba(124,106,255,0.08);
+  }
+
+  /* AGENTS PORTAL */
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+  }
+
+  .agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .agent-card.openai::before { background: linear-gradient(90deg, #10a37f, #7c6aff); }
+  .agent-card.gdk::before { background: linear-gradient(90deg, #4285f4, #34a853); }
+  .agent-card.langgraph::before { background: linear-gradient(90deg, #ff6a9c, #ff9f40); }
+
+  .agent-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-6px);
+    background: var(--surface2);
+  }
+
+  .agent-card:hover::before { opacity: 1; }
+
+  .agent-framework {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .agent-card.openai .agent-framework { color: #10a37f; }
+  .agent-card.gdk .agent-framework { color: #4285f4; }
+  .agent-card.langgraph .agent-framework { color: #ff6a9c; }
+
+  .framework-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .agent-card.openai .framework-dot { background: #10a37f; }
+  .agent-card.gdk .framework-dot { background: #4285f4; }
+  .agent-card.langgraph .framework-dot { background: #ff6a9c; }
+
+  .agent-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .agent-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .agent-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .agent-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .agent-status {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  .status-dev {
+    background: rgba(255,200,0,0.1);
+    border: 1px solid rgba(255,200,0,0.2);
+    color: #ffc800;
+  }
+
+  .status-live {
+    background: rgba(100,255,150,0.1);
+    border: 1px solid rgba(100,255,150,0.2);
+    color: #64ff96;
+  }
+
+  .agent-links {
+    display: flex;
+    gap: 12px;
+  }
+
+  .agent-link {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    transition: color 0.2s;
+    padding: 4px 0;
+  }
+
+  .agent-link:hover { color: var(--text); }
+
+  .agent-link svg {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+
+  /* TECH TAGS PER AGENT */
+  .agent-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .agent-tech-tag {
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  /* CONTACT */
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .contact-text h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  .contact-text p {
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact-link-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+
+  .contact-link-item:hover {
+    border-color: var(--accent);
+    background: var(--surface2);
+    transform: translateX(6px);
+  }
+
+  .contact-link-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+  }
+
+  .contact-link-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .contact-link-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .contact-link-value {
+    font-size: 14px;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .footer-built {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .footer-built span {
+    color: var(--accent);
+  }
+
+  /* DIVIDER */
+  .section-divider {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-divider hr {
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ENTRANCE ANIMATIONS */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* GLOW ORBS */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.12;
+  }
+
+  .orb-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--accent);
+    top: -100px;
+    right: -100px;
+  }
+
+  .orb-2 {
+    width: 400px;
+    height: 400px;
+    background: var(--accent2);
+    bottom: 200px;
+    left: -100px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero, section { padding-left: 24px; padding-right: 24px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .agents-grid { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+    .exp-item { grid-template-columns: 1fr; gap: 8px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+
+  @media (max-width: 600px) {
+    .skills-grid { grid-template-columns: 1fr; }
+    .hero-cta { flex-direction: column; }
+  }
+
+  /* LANG HIDDEN */
+  [data-lang] { display: none; }
+  .lang-ja [data-lang="ja"] { display: block; }
+  .lang-ja [data-lang-inline="ja"] { display: inline; }
+  .lang-en [data-lang="en"] { display: block; }
+  .lang-en [data-lang-inline="en"] { display: inline; }
+  .lang-ko [data-lang="ko"] { display: block; }
+  .lang-ko [data-lang-inline="ko"] { display: inline; }
+
+  [data-lang-inline] { display: none; }
+
+  /* default show ja */
+  body .lang-ja-default [data-lang="ja"] { display: block; }
+</style>
+</head>
+<body class="lang-ja">
+
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SUNG MINJE</div>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about">
+        <span data-lang="ja">プロフィール</span>
+        <span data-lang="en">About</span>
+        <span data-lang="ko">소개</span>
+      </a></li>
+      <li><a href="#experience">
+        <span data-lang="ja">経歴</span>
+        <span data-lang="en">Experience</span>
+        <span data-lang="ko">경력</span>
+      </a></li>
+      <li><a href="#skills">
+        <span data-lang="ja">スキル</span>
+        <span data-lang="en">Skills</span>
+        <span data-lang="ko">기술</span>
+      </a></li>
+      <li><a href="#agents">
+        <span data-lang="ja">AIエージェント</span>
+        <span data-lang="en">AI Agents</span>
+        <span data-lang="ko">AI 에이전트</span>
+      </a></li>
+      <li><a href="#contact">
+        <span data-lang="ja">連絡先</span>
+        <span data-lang="en">Contact</span>
+        <span data-lang="ko">연락처</span>
+      </a></li>
+    </ul>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('ja')">JA</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('ko')">KO</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div style="position:relative;z-index:1;">
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <span data-lang="ja">AIエージェント開発者</span>
+      <span data-lang="en">AI Agent Developer</span>
+      <span data-lang="ko">AI 에이전트 개발자</span>
+    </div>
+    <h1 class="hero-name">
+      Sung<br><span class="highlight">Minje</span>
+    </h1>
+    <p class="hero-subtitle">
+      <span data-lang="ja">データサイエンティストとしての分析力をベースに、OpenAI Agents SDK・Google ADK・LangGraphを活用したAIエージェント開発へ転向中。実務課題を自律的に解決するシステムを構築します。</span>
+      <span data-lang="en">Transitioning from data scientist to AI agent developer. Building autonomous systems that solve real-world problems using OpenAI Agents SDK, Google ADK, and LangGraph.</span>
+      <span data-lang="ko">데이터 사이언티스트로서의 분석 역량을 바탕으로, OpenAI Agents SDK·Google ADK·LangGraph를 활용한 AI 에이전트 개발로 전향 중. 실무 과제를 자율적으로 해결하는 시스템을 구축합니다.</span>
+    </p>
+    <div class="hero-cta">
+      <a href="#agents" class="btn-primary">
+        <span data-lang="ja">AIエージェントを見る →</span>
+        <span data-lang="en">View AI Agents →</span>
+        <span data-lang="ko">AI 에이전트 보기 →</span>
+      </a>
+      <a href="#contact" class="btn-outline">
+        <span data-lang="ja">連絡する</span>
+        <span data-lang="en">Get in touch</span>
+        <span data-lang="ko">연락하기</span>
+      </a>
+    </div>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</div>
+</div>
+
+<!-- ABOUT -->
+<div class="section-divider"><hr></div>
+<section id="about" class="fade-in">
+  <div class="section-label">
+    <span data-lang="ja">プロフィール</span>
+    <span data-lang="en">About</span>
+    <span data-lang="ko">소개</span>
+  </div>
+  <h2 class="section-title">
+    <span data-lang="ja">データから、<br>エージェントへ。</span>
+    <span data-lang="en">From Data<br>to Agents.</span>
+    <span data-lang="ko">데이터에서<br>에이전트로.</span>
+  </h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p data-lang="ja">
+        広告代理店で<strong>データサイエンティスト</strong>として、マーケティングデータの分析・予測モデルの構築・ダッシュボード設計などを担当してきました。
+      </p>
+      <p data-lang="ja">
+        AIエージェント技術の急速な進化を目の当たりにし、「分析して提示する」ツールから「<strong>自律的に判断して実行する</strong>」エージェントへの転換点にいると確信。この領域を深く学び、実務に活かせる開発者への転向を目指しています。
+      </p>
+      <p data-lang="ja">
+        現在は OpenAI Agents SDK、Google ADK、LangGraph の3つのフレームワークを用いて、実際にデプロイ可能なAIエージェントを開発中です。
+      </p>
+
+      <p data-lang="en">
+        As a <strong>Data Scientist</strong> at an advertising agency, I've led marketing data analysis, predictive modeling, and dashboard design for major clients.
+      </p>
+      <p data-lang="en">
+        Witnessing the rapid evolution of AI agent technology convinced me we're at an inflection point—from tools that "analyze and present" to agents that "<strong>reason and act autonomously</strong>." I'm committed to mastering this space and becoming a developer who builds real agentic systems.
+      </p>
+      <p data-lang="en">
+        Currently building deployable AI agents using OpenAI Agents SDK, Google ADK, and LangGraph.
+      </p>
+
+      <p data-lang="ko">
+        광고대행사에서 <strong>데이터 사이언티스트</strong>로 마케팅 데이터 분석, 예측 모델 구축, 대시보드 설계 등을 담당해왔습니다.
+      </p>
+      <p data-lang="ko">
+        AI 에이전트 기술의 급속한 진화를 직접 목격하며, "분석해서 제시하는" 도구에서 "<strong>자율적으로 판단하고 실행하는</strong>" 에이전트로의 전환점이라는 확신을 가지게 되었습니다.
+      </p>
+      <p data-lang="ko">
+        현재 OpenAI Agents SDK, Google ADK, LangGraph 3가지 프레임워크를 사용해 실제 배포 가능한 AI 에이전트를 개발 중입니다.
+      </p>
+    </div>
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="info-label">
+          <span data-lang="ja">名前</span>
+          <span data-lang="en">Name</span>
+          <span data-lang="ko">이름</span>
+        </span>
+        <span class="info-value">Sung Minje（성민재）</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">
+          <span data-lang="ja">現在地</span>
+          <span data-lang="en">Location</span>
+          <span data-lang="ko">위치</span>
+        </span>
+        <span class="info-value">
+          <span data-lang="ja">韓国（日本勤務希望）</span>
+          <span data-lang="en">South Korea (Open to Japan)</span>
+          <span data-lang="ko">한국 (일본 취업 희망)</span>
+        </span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">
+          <span data-lang="ja">現職</span>
+          <span data-lang="en">Current Role</span>
+          <span data-lang="ko">현직</span>
+        </span>
+        <span class="info-value">
+          <span data-lang="ja">データサイエンティスト @ 広告代理店</span>
+          <span data-lang="en">Data Scientist @ Ad Agency</span>
+          <span data-lang="ko">데이터 사이언티스트 @ 광고대행사</span>
+        </span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">
+          <span data-lang="ja">希望職種</span>
+          <span data-lang="en">Target Role</span>
+          <span data-lang="ko">희망 직종</span>
+        </span>
+        <span class="info-value">
+          <span data-lang="ja">AIエージェント開発者 / MLエンジニア</span>
+          <span data-lang="en">AI Agent Developer / ML Engineer</span>
+          <span data-lang="ko">AI 에이전트 개발자 / ML 엔지니어</span>
+        </span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">
+          <span data-lang="ja">言語</span>
+          <span data-lang="en">Languages</span>
+          <span data-lang="ko">언어</span>
+        </span>
+        <span class="info-value">
+          <span data-lang="ja">韓国語（母語）/ 日本語（ビジネスレベル）/ 英語（読み書き）</span>
+          <span data-lang="en">Korean (Native) / Japanese (Business) / English (Reading/Writing)</span>
+          <span data-lang="ko">한국어 (모국어) / 일본어 (비즈니스) / 영어 (읽기/쓰기)</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<div class="section-divider"><hr></div>
+<section id="experience" class="fade-in">
+  <div class="section-label">
+    <span data-lang="ja">経歴</span>
+    <span data-lang="en">Experience</span>
+    <span data-lang="ko">경력</span>
+  </div>
+  <h2 class="section-title">
+    <span data-lang="ja">職務経歴</span>
+    <span data-lang="en">Work History</span>
+    <span data-lang="ko">직무 경력</span>
+  </h2>
+  <div class="exp-list">
+    <div class="exp-item">
+      <div class="exp-period">2022 — Present</div>
+      <div class="exp-right">
+        <div class="exp-role">
+          <span data-lang="ja">データサイエンティスト</span>
+          <span data-lang="en">Data Scientist</span>
+          <span data-lang="ko">데이터 사이언티스트</span>
+        </div>
+        <div class="exp-company">
+          <span data-lang="ja">広告代理店</span>
+          <span data-lang="en">Advertising Agency</span>
+          <span data-lang="ko">광고대행사</span>
+        </div>
+        <div class="exp-desc">
+          <span data-lang="ja">マーケティングデータの分析・可視化、顧客行動予測モデルの構築、ダッシュボード設計。Python・SQLを中心とした分析基盤の整備に従事。</span>
+          <span data-lang="en">Marketing data analysis & visualization, customer behavior prediction modeling, dashboard design. Built analytics infrastructure centered on Python & SQL.</span>
+          <span data-lang="ko">마케팅 데이터 분석·시각화, 고객 행동 예측 모델 구축, 대시보드 설계. Python·SQL 중심의 분석 기반 정비.</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2020 — 2022</div>
+      <div class="exp-right">
+        <div class="exp-role">
+          <span data-lang="ja">データアナリスト</span>
+          <span data-lang="en">Data Analyst</span>
+          <span data-lang="ko">데이터 애널리스트</span>
+        </div>
+        <div class="exp-company">
+          <span data-lang="ja">マーケティング会社</span>
+          <span data-lang="en">Marketing Company</span>
+          <span data-lang="ko">마케팅 회사</span>
+        </div>
+        <div class="exp-desc">
+          <span data-lang="ja">広告効果測定・ABテスト設計・レポート自動化。Tableauを用いた経営ダッシュボードの構築。</span>
+          <span data-lang="en">Ad effectiveness measurement, A/B test design, report automation. Built executive dashboards using Tableau.</span>
+          <span data-lang="ko">광고 효과 측정·A/B 테스트 설계·리포트 자동화. Tableau를 활용한 경영 대시보드 구축.</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2016 — 2020</div>
+      <div class="exp-right">
+        <div class="exp-role">
+          <span data-lang="ja">統計学・コンピュータサイエンス 学士</span>
+          <span data-lang="en">B.S. Statistics & Computer Science</span>
+          <span data-lang="ko">통계학·컴퓨터공학 학사</span>
+        </div>
+        <div class="exp-company">
+          <span data-lang="ja">韓国 ○○大学</span>
+          <span data-lang="en">○○ University, South Korea</span>
+          <span data-lang="ko">○○대학교</span>
+        </div>
+        <div class="exp-desc">
+          <span data-lang="ja">統計解析・機械学習・データ構造を専攻。卒業論文：自然言語処理を用いたSNS感情分析。</span>
+          <span data-lang="en">Majored in statistical analysis, machine learning, and data structures. Thesis: SNS sentiment analysis using NLP.</span>
+          <span data-lang="ko">통계 분석·머신러닝·자료구조 전공. 졸업논문: NLP를 활용한 SNS 감성 분석.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<div class="section-divider"><hr></div>
+<section id="skills" class="fade-in">
+  <div class="section-label">
+    <span data-lang="ja">スキル</span>
+    <span data-lang="en">Skills</span>
+    <span data-lang="ko">기술 스택</span>
+  </div>
+  <h2 class="section-title">
+    <span data-lang="ja">技術スタック</span>
+    <span data-lang="en">Tech Stack</span>
+    <span data-lang="ko">기술 스택</span>
+  </h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-category">AI Frameworks</div>
+      <div class="skill-tags">
+        <span class="skill-tag highlight">OpenAI Agents SDK</span>
+        <span class="skill-tag highlight">Google ADK</span>
+        <span class="skill-tag highlight">LangGraph</span>
+        <span class="skill-tag">LangChain</span>
+        <span class="skill-tag">CrewAI</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">LLM & AI APIs</div>
+      <div class="skill-tags">
+        <span class="skill-tag highlight">GPT-4o</span>
+        <span class="skill-tag highlight">Gemini</span>
+        <span class="skill-tag">Claude API</span>
+        <span class="skill-tag">Tavily</span>
+        <span class="skill-tag">Firecrawl</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">Monitoring & Ops</div>
+      <div class="skill-tags">
+        <span class="skill-tag highlight">LangSmith</span>
+        <span class="skill-tag highlight">OpenAI Traces</span>
+        <span class="skill-tag">ADK Web UI</span>
+        <span class="skill-tag">LangGraph Studio</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">Data & Analytics</div>
+      <div class="skill-tags">
+        <span class="skill-tag highlight">Python</span>
+        <span class="skill-tag highlight">SQL</span>
+        <span class="skill-tag">Pandas</span>
+        <span class="skill-tag">scikit-learn</span>
+        <span class="skill-tag">Tableau</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">Backend & Deploy</div>
+      <div class="skill-tags">
+        <span class="skill-tag highlight">Streamlit</span>
+        <span class="skill-tag">FastAPI</span>
+        <span class="skill-tag">Docker</span>
+        <span class="skill-tag">GitHub Actions</span>
+        <span class="skill-tag">Streamlit Cloud</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag highlight">Korean (Native)</span>
+        <span class="skill-tag highlight">Japanese (Business)</span>
+        <span class="skill-tag">English (R/W)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI AGENTS PORTAL -->
+<div class="section-divider"><hr></div>
+<section id="agents" class="fade-in">
+  <div class="section-label">
+    <span data-lang="ja">AIエージェント ポータル</span>
+    <span data-lang="en">AI Agent Portal</span>
+    <span data-lang="ko">AI 에이전트 포털</span>
+  </div>
+  <h2 class="section-title">
+    <span data-lang="ja">構築中の<br>エージェント</span>
+    <span data-lang="en">Agents I'm<br>Building</span>
+    <span data-lang="ko">개발 중인<br>에이전트</span>
+  </h2>
+  <div class="agents-grid">
+
+    <!-- Agent 1: News Reader -->
+    <div class="agent-card openai">
+      <div class="agent-framework">
+        <span class="framework-dot"></span>
+        OpenAI Agents SDK
+      </div>
+      <span class="agent-icon">📰</span>
+      <h3 class="agent-title">
+        <span data-lang="ja">AIトレンド<br>ニュースリーダー</span>
+        <span data-lang="en">AI Trend<br>News Reader</span>
+        <span data-lang="ko">AI 트렌드<br>뉴스 리더</span>
+      </h3>
+      <p class="agent-desc">
+        <span data-lang="ja">AIに関するニュースを自動収集・スコアリングし、即発行可能なレポートを生成する3エージェント協調システム。</span>
+        <span data-lang="en">A 3-agent system that automatically collects, scores, and summarizes AI news into publication-ready reports.</span>
+        <span data-lang="ko">AI 관련 뉴스를 자동 수집·스코어링하여 즉시 발행 가능한 리포트를 생성하는 3에이전트 협업 시스템.</span>
+      </p>
+      <div class="agent-tech">
+        <span class="agent-tech-tag">Handoff</span>
+        <span class="agent-tech-tag">Web Search</span>
+        <span class="agent-tech-tag">Tavily</span>
+        <span class="agent-tech-tag">OpenAI Traces</span>
+      </div>
+      <div class="agent-footer">
+        <span class="agent-status status-dev">
+          <span data-lang="ja">開発中</span>
+          <span data-lang="en">In Dev</span>
+          <span data-lang="ko">개발 중</span>
+        </span>
+        <div class="agent-links">
+          <a href="#" class="agent-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="#" class="agent-link">
+            <span data-lang="ja">デモ →</span>
+            <span data-lang="en">Demo →</span>
+            <span data-lang="ko">데모 →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agent 2: Investment -->
+    <div class="agent-card gdk">
+      <div class="agent-framework">
+        <span class="framework-dot"></span>
+        Google ADK
+      </div>
+      <span class="agent-icon">📈</span>
+      <h3 class="agent-title">
+        <span data-lang="ja">投資戦略<br>エージェント</span>
+        <span data-lang="en">Investment<br>Strategy Agent</span>
+        <span data-lang="ko">투자 전략<br>에이전트</span>
+      </h3>
+      <p class="agent-desc">
+        <span data-lang="ja">市場データを収集・分析し、個人の投資スタイルに合わせた戦略レポートを生成。教育・学習目的のシステムです。</span>
+        <span data-lang="en">Collects and analyzes market data to generate personalized investment strategy reports. For educational purposes only.</span>
+        <span data-lang="ko">시장 데이터를 수집·분석하여 개인 투자 스타일에 맞는 전략 리포트를 생성. 교육·학습 목적 시스템입니다.</span>
+      </p>
+      <div class="agent-tech">
+        <span class="agent-tech-tag">Session Memory</span>
+        <span class="agent-tech-tag">Multi-Agent</span>
+        <span class="agent-tech-tag">ADK Web UI</span>
+        <span class="agent-tech-tag">Streamlit</span>
+      </div>
+      <div class="agent-footer">
+        <span class="agent-status status-dev">
+          <span data-lang="ja">開発中</span>
+          <span data-lang="en">In Dev</span>
+          <span data-lang="ko">개발 중</span>
+        </span>
+        <div class="agent-links">
+          <a href="#" class="agent-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="#" class="agent-link">
+            <span data-lang="ja">デモ →</span>
+            <span data-lang="en">Demo →</span>
+            <span data-lang="ko">데모 →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agent 3: English Battle -->
+    <div class="agent-card langgraph">
+      <div class="agent-framework">
+        <span class="framework-dot"></span>
+        LangGraph
+      </div>
+      <span class="agent-icon">⚔️</span>
+      <h3 class="agent-title">
+        <span data-lang="ja">英作文バトル<br>エージェント</span>
+        <span data-lang="en">English Writing<br>Battle Agent</span>
+        <span data-lang="ko">영어 영작<br>배틀 에이전트</span>
+      </h3>
+      <p class="agent-desc">
+        <span data-lang="ja">ゲーム形式で英作文を練習。AIと対戦しながら、採点・フィードバック・ランキングを通じて楽しく英語力を鍛えます。</span>
+        <span data-lang="en">Practice English writing in a game format. Compete against AI with scoring, feedback, and rankings to level up your skills.</span>
+        <span data-lang="ko">게임 형식으로 영작문을 연습. AI와 대결하면서 채점·피드백·랭킹을 통해 즐겁게 영어 실력을 키웁니다.</span>
+      </p>
+      <div class="agent-tech">
+        <span class="agent-tech-tag">State Graph</span>
+        <span class="agent-tech-tag">Checkpointing</span>
+        <span class="agent-tech-tag">LangSmith</span>
+        <span class="agent-tech-tag">Streamlit</span>
+      </div>
+      <div class="agent-footer">
+        <span class="agent-status status-dev">
+          <span data-lang="ja">開発中</span>
+          <span data-lang="en">In Dev</span>
+          <span data-lang="ko">개발 중</span>
+        </span>
+        <div class="agent-links">
+          <a href="#" class="agent-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="#" class="agent-link">
+            <span data-lang="ja">デモ →</span>
+            <span data-lang="en">Demo →</span>
+            <span data-lang="ko">데모 →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="section-divider"><hr></div>
+<section id="contact" class="fade-in">
+  <div class="contact-inner">
+    <div class="contact-text">
+      <div class="section-label">
+        <span data-lang="ja">連絡先</span>
+        <span data-lang="en">Contact</span>
+        <span data-lang="ko">연락처</span>
+      </div>
+      <h2>
+        <span data-lang="ja">一緒に<br>働きましょう。</span>
+        <span data-lang="en">Let's work<br>together.</span>
+        <span data-lang="ko">함께<br>일해요.</span>
+      </h2>
+      <p>
+        <span data-lang="ja">AIエージェント開発のポジションを探しています。お気軽にご連絡ください。</span>
+        <span data-lang="en">Looking for AI agent developer positions. Feel free to reach out anytime.</span>
+        <span data-lang="ko">AI 에이전트 개발 포지션을 찾고 있습니다. 편하게 연락주세요.</span>
+      </p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:your@email.com" class="contact-link-item">
+        <div class="contact-link-icon">✉️</div>
+        <div class="contact-link-text">
+          <span class="contact-link-label">Email</span>
+          <span class="contact-link-value">your@email.com</span>
+        </div>
+      </a>
+      <a href="https://github.com/yourusername" class="contact-link-item" target="_blank">
+        <div class="contact-link-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </div>
+        <div class="contact-link-text">
+          <span class="contact-link-label">GitHub</span>
+          <span class="contact-link-value">github.com/yourusername</span>
+        </div>
+      </a>
+      <a href="https://linkedin.com/in/yourusername" class="contact-link-item" target="_blank">
+        <div class="contact-link-icon">💼</div>
+        <div class="contact-link-text">
+          <span class="contact-link-label">LinkedIn</span>
+          <span class="contact-link-value">linkedin.com/in/yourusername</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="section-divider"><hr></div>
+<footer>
+  <div class="footer-copy">© 2026 Sung Minje. All rights reserved.</div>
+  <div class="footer-built">
+    <span data-lang="ja">AIエージェント開発者への道 <span>→</span> 構築中</span>
+    <span data-lang="en">Road to AI Agent Developer <span>→</span> In Progress</span>
+    <span data-lang="ko">AI 에이전트 개발자로의 여정 <span>→</span> 진행 중</span>
+  </div>
+</footer>
+
+<script>
+  // LANG SWITCHER
+  function setLang(lang) {
+    document.body.className = 'lang-' + lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+    });
+    document.documentElement.lang = lang === 'ko' ? 'ko' : lang === 'en' ? 'en' : 'ja';
+  }
+
+  // SCROLL FADE IN
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // STAGGER AGENT CARDS
+  document.querySelectorAll('.agent-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.1}s`;
+  });
+</script>
+</body>
+</html>
