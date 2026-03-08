@@ -547,6 +547,7 @@
   .agent-card.openai::before { background: linear-gradient(90deg, #10a37f, #7c6aff); }
   .agent-card.gdk::before { background: linear-gradient(90deg, #4285f4, #34a853); }
   .agent-card.langgraph::before { background: linear-gradient(90deg, #ff6a9c, #ff9f40); }
+  .agent-card.crewai::before { background: linear-gradient(90deg, #ea580c, #ea4b71); }
 
   .agent-card:hover {
     border-color: rgba(255,255,255,0.15);
@@ -570,6 +571,7 @@
   .agent-card.openai .agent-framework { color: #10a37f; }
   .agent-card.gdk .agent-framework { color: #4285f4; }
   .agent-card.langgraph .agent-framework { color: #ff6a9c; }
+  .agent-card.crewai .agent-framework { color: #ea580c; }
 
   .framework-dot {
     width: 6px;
@@ -580,6 +582,14 @@
   .agent-card.openai .framework-dot { background: #10a37f; }
   .agent-card.gdk .framework-dot { background: #4285f4; }
   .agent-card.langgraph .framework-dot { background: #ff6a9c; }
+  .agent-card.crewai .framework-dot { background: #ea580c; }
+
+  .framework-logo {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
 
   .agent-icon {
     font-size: 36px;
@@ -1244,10 +1254,47 @@ footer { flex-direction: column; gap: 12px; text-align: center; }
   </h2>
   <div class="agents-grid">
 
+    <!-- Agent 0: Honeymoon Planner -->
+    <div class="agent-card openai" onclick="location.href='agents/honeymoon-planner.html'" style="cursor:pointer;">
+      <div class="agent-framework">
+        <img class="framework-logo" src="https://cdn.simpleicons.org/openai/10a37f" alt="OpenAI">
+        OpenAI Agents SDK
+      </div>
+      <span class="agent-icon">💍</span>
+      <h3 class="agent-title">
+        <span data-lang="ja">新婚旅行<br>プランナー</span>
+        <span data-lang="en">Honeymoon Trip<br>Planner</span>
+        <span data-lang="ko">신혼여행<br>플래너</span>
+      </h3>
+      <p class="agent-desc">
+        <span data-lang="ja">カップルの要望をヒアリングし、行き先・宿・アクティビティまで最適な新婚旅行プランを提案。SDKチュートリアルをベースに構築。</span>
+        <span data-lang="en">Listens to the couple's wishes and proposes a full honeymoon plan — destination, hotels, and activities. Built on the OpenAI Agents SDK tutorial.</span>
+        <span data-lang="ko">커플의 요구사항을 청취하여 목적지·숙소·액티비티까지 최적의 신혼여행 플랜을 제안. SDK 튜토리얼 베이스로 구축.</span>
+      </p>
+      <div class="agent-tech">
+        <span class="agent-tech-tag">Handoff</span>
+        <span class="agent-tech-tag">Tool Use</span>
+        <span class="agent-tech-tag">OpenAI Traces</span>
+      </div>
+      <div class="agent-footer">
+        <span class="agent-status status-dev">
+          <span data-lang="ja">開発中</span>
+          <span data-lang="en">In Dev</span>
+          <span data-lang="ko">개발 중</span>
+        </span>
+        <div class="agent-links">
+          <a href="#" class="agent-link" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+
     <!-- Agent 1: News Reader -->
     <div class="agent-card openai" onclick="location.href='agents/news-reader.html'" style="cursor:pointer;">
       <div class="agent-framework">
-        <span class="framework-dot"></span>
+        <img class="framework-logo" src="https://cdn.simpleicons.org/openai/10a37f" alt="OpenAI">
         OpenAI Agents SDK
       </div>
       <span class="agent-icon">📰</span>
@@ -1290,7 +1337,7 @@ footer { flex-direction: column; gap: 12px; text-align: center; }
     <!-- Agent 2: Investment -->
     <div class="agent-card gdk" onclick="location.href='agents/investment.html'" style="cursor:pointer;">
       <div class="agent-framework">
-        <span class="framework-dot"></span>
+        <img class="framework-logo" src="https://cdn.simpleicons.org/google/4285f4" alt="Google">
         Google ADK
       </div>
       <span class="agent-icon">📈</span>
@@ -1333,7 +1380,7 @@ footer { flex-direction: column; gap: 12px; text-align: center; }
     <!-- Agent 3: English Battle -->
     <div class="agent-card langgraph" onclick="location.href='agents/english-battle.html'" style="cursor:pointer;">
       <div class="agent-framework">
-        <span class="framework-dot"></span>
+        <img class="framework-logo" src="https://cdn.simpleicons.org/langchain/ff6a9c" alt="LangChain">
         LangGraph
       </div>
       <span class="agent-icon">⚔️</span>
@@ -1368,6 +1415,44 @@ footer { flex-direction: column; gap: 12px; text-align: center; }
             <span data-lang="ja">デモ →</span>
             <span data-lang="en">Demo →</span>
             <span data-lang="ko">데모 →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agent 4: Job Support + Email Auto-Reply -->
+    <div class="agent-card crewai" onclick="location.href='agents/job-support.html'" style="cursor:pointer;">
+      <div class="agent-framework">
+        <img class="framework-logo" src="https://cdn.simpleicons.org/n8n/ea4b71" alt="n8n">
+        CrewAI + n8n
+      </div>
+      <span class="agent-icon">📨</span>
+      <h3 class="agent-title">
+        <span data-lang="ja">転職支援＆<br>メール自動返信</span>
+        <span data-lang="en">Job Change Support<br>+ Email Auto-Reply</span>
+        <span data-lang="ko">전직 활동 지원<br>+ 메일 자동답장</span>
+      </h3>
+      <p class="agent-desc">
+        <span data-lang="ja">CrewAIで職務経歴・求人情報を分析し転職戦略を立案。n8nで採用担当者へのメール自動返信ワークフローを構築する実践型システム。</span>
+        <span data-lang="en">CrewAI analyzes career history and job postings to build a job change strategy. n8n automates email replies to recruiters — a practical, real-world system.</span>
+        <span data-lang="ko">CrewAI로 직무 경력·채용 정보를 분석하여 전직 전략을 수립. n8n으로 채용 담당자에게 메일 자동답장 워크플로우를 구축하는 실전형 시스템.</span>
+      </p>
+      <div class="agent-tech">
+        <span class="agent-tech-tag">CrewAI</span>
+        <span class="agent-tech-tag">n8n</span>
+        <span class="agent-tech-tag">Gmail API</span>
+        <span class="agent-tech-tag">Workflow</span>
+      </div>
+      <div class="agent-footer">
+        <span class="agent-status status-dev">
+          <span data-lang="ja">開発中</span>
+          <span data-lang="en">In Dev</span>
+          <span data-lang="ko">개발 중</span>
+        </span>
+        <div class="agent-links">
+          <a href="#" class="agent-link" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
           </a>
         </div>
       </div>

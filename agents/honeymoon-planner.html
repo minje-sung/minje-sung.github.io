@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Honeymoon Trip Planner — Sung Minje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #111118; --surface2: #1a1a24;
+    --border: rgba(255,255,255,0.07);
+    --accent: #10a37f; --accent-purple: #7c6aff; --accent2: #ff6a9c;
+    --text: #e8e8f0; --text-muted: #6b6b80; --text-dim: #3a3a50;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; line-height: 1.7; overflow-x: hidden; }
+  body.lang-ko { font-family: 'Noto Sans KR', sans-serif; }
+  body.lang-en { font-family: 'Syne', sans-serif; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
+  .grid-bg { position: fixed; inset: 0; background-image: linear-gradient(rgba(16,163,127,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(16,163,127,0.025) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+  .orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.1; }
+  .orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; right: -100px; }
+  .orb-2 { width: 300px; height: 300px; background: var(--accent2); bottom: 100px; left: -80px; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--accent-purple); letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
+  .nav-logo-sep { color: var(--text-dim); }
+  .nav-right { display: flex; align-items: center; gap: 20px; }
+  .nav-back { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--text-muted); text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s; }
+  .nav-back:hover { color: var(--text); }
+  .lang-switcher { display: flex; gap: 4px; background: var(--surface2); border-radius: 8px; padding: 4px; border: 1px solid var(--border); }
+  .lang-btn { background: none; border: none; color: var(--text-muted); font-size: 12px; font-family: 'Space Mono', monospace; padding: 4px 10px; border-radius: 5px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.05em; }
+  .lang-btn.active { background: var(--accent-purple); color: white; }
+
+  [data-lang] { display: none; }
+  .lang-ja [data-lang="ja"] { display: block; }
+  .lang-en [data-lang="en"] { display: block; }
+  .lang-ko [data-lang="ko"] { display: block; }
+
+  main { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 100px 40px 80px; }
+  .breadcrumb { display: flex; align-items: center; gap: 8px; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-dim); margin-bottom: 32px; }
+  .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--text); }
+  .breadcrumb-sep { color: var(--text-dim); }
+
+  .agent-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; background: var(--surface); margin-bottom: 32px; }
+  .agent-hero-image { position: relative; min-height: 480px; overflow: hidden; background: var(--surface2); }
+  .agent-hero-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .agent-hero-image-overlay { position: absolute; inset: 0; background: linear-gradient(to right, transparent 70%, var(--surface)); }
+  .agent-hero-info { padding: 48px 40px; display: flex; flex-direction: column; gap: 24px; }
+
+  .agent-framework-badge { display: flex; align-items: center; gap: 10px; }
+  .framework-name { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; }
+  .framework-logo { width: 16px; height: 16px; object-fit: contain; }
+  .status-badge { font-family: 'Space Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: 20px; background: rgba(255,200,0,0.1); border: 1px solid rgba(255,200,0,0.25); color: #ffc800; letter-spacing: 0.08em; }
+  .agent-title-large { font-family: 'Syne', sans-serif; font-size: clamp(28px, 3.5vw, 40px); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
+  .agent-info-section { display: flex; flex-direction: column; gap: 8px; }
+  .info-section-title { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .info-section-body { font-size: 14px; color: var(--text-muted); line-height: 1.85; }
+  .role-list { display: flex; flex-direction: column; gap: 12px; }
+  .role-item { padding: 12px 16px; background: var(--surface2); border: 1px solid var(--border); border-left: 2px solid var(--accent); border-radius: 0 8px 8px 0; }
+  .role-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .role-desc { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+
+  .section-block { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; margin-bottom: 32px; }
+  .section-block-header { padding: 20px 32px; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .section-block-title { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent-purple); letter-spacing: 0.2em; text-transform: uppercase; }
+  .section-block-body { padding: 32px; }
+
+  .flow-diagram { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 20px 0; }
+  .flow-row { display: flex; align-items: flex-start; gap: 24px; justify-content: center; }
+  .flow-node { font-size: 13px; padding: 10px 20px; border-radius: 8px; text-align: center; min-width: 160px; }
+  .flow-node.input { background: rgba(124,106,255,0.1); border: 1px solid rgba(124,106,255,0.3); color: var(--accent-purple); font-family: 'Space Mono', monospace; font-size: 12px; }
+  .flow-node.agent-node { background: rgba(16,163,127,0.08); border: 1px solid rgba(16,163,127,0.35); color: var(--text); font-weight: 500; }
+  .flow-node.tool-node { background: rgba(255,200,0,0.06); border: 1px solid rgba(255,200,0,0.2); color: #ffc800; font-size: 12px; min-width: 120px; }
+  .flow-node.output-node { background: rgba(100,255,150,0.06); border: 1px solid rgba(100,255,150,0.2); color: #64ff96; font-weight: 500; }
+  .flow-down { width: 1px; height: 32px; background: linear-gradient(to bottom, rgba(124,106,255,0.5), rgba(16,163,127,0.5)); margin: 0 auto; position: relative; }
+  .flow-down::after { content: '▼'; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); font-size: 9px; color: rgba(16,163,127,0.6); }
+  .flow-split { display: flex; gap: 40px; align-items: flex-start; justify-content: center; }
+  .flow-branch { display: flex; flex-direction: column; align-items: center; }
+
+  .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tech-tag { font-family: 'Space Mono', monospace; font-size: 11px; padding: 5px 12px; border-radius: 6px; background: rgba(16,163,127,0.08); border: 1px solid rgba(16,163,127,0.25); color: var(--accent); }
+  .video-placeholder { aspect-ratio: 16/9; background: var(--surface2); border: 2px dashed var(--border); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--text-dim); }
+  .video-placeholder-icon { font-size: 48px; opacity: 0.4; }
+  .video-placeholder-text { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.1em; }
+
+  .cta-row { display: flex; gap: 16px; flex-wrap: wrap; padding: 32px; border-top: 1px solid var(--border); }
+  .btn-cta-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: white; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+  .btn-cta-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+  .btn-cta-outline { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; padding: 14px 28px; border-radius: 8px; font-size: 14px; transition: all 0.2s; background: var(--surface2); }
+  .btn-cta-outline:hover { border-color: var(--accent-purple); color: var(--text); transform: translateY(-2px); }
+  .btn-cta-outline svg { width: 18px; height: 18px; }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    main { padding: 90px 24px 60px; }
+    .agent-hero { grid-template-columns: 1fr; }
+    .agent-hero-image { min-height: 280px; }
+    .agent-hero-image-overlay { background: linear-gradient(to bottom, transparent 60%, var(--surface)); }
+    .agent-hero-info { padding: 28px 24px; }
+    .cta-row { padding: 24px; }
+    .flow-split { gap: 16px; }
+    .flow-node { min-width: 120px; font-size: 11px; }
+  }
+</style>
+</head>
+<body class="lang-ja">
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<nav>
+  <a href="../index.html" class="nav-logo">SUNG MINJE <span class="nav-logo-sep">/ PORTFOLIO</span></a>
+  <div class="nav-right">
+    <a href="../index.html#agents" class="nav-back">← AI Agents</a>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('ja')">JA</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('ko')">KO</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="breadcrumb">
+    <a href="../index.html">Portfolio</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="../index.html#agents">AI Agents</a>
+    <span class="breadcrumb-sep">/</span>
+    <span data-lang="ja">新婚旅行プランナー</span>
+    <span data-lang="en">Honeymoon Trip Planner</span>
+    <span data-lang="ko">신혼여행 플래너</span>
+  </div>
+
+  <div class="agent-hero">
+    <div class="agent-hero-image">
+      <img src="https://picsum.photos/seed/honeymoon/800/600" alt="Honeymoon Trip Planner">
+      <div class="agent-hero-image-overlay"></div>
+    </div>
+    <div class="agent-hero-info">
+      <div class="agent-framework-badge">
+        <img class="framework-logo" src="https://cdn.simpleicons.org/openai/10a37f" alt="OpenAI">
+        <span class="framework-name">OpenAI Agents SDK</span>
+        <span class="status-badge">In Dev</span>
+      </div>
+
+      <h1 class="agent-title-large">
+        <span data-lang="ja">新婚旅行<br>プランナー</span>
+        <span data-lang="en">Honeymoon Trip<br>Planner</span>
+        <span data-lang="ko">신혼여행<br>플래너</span>
+      </h1>
+
+      <div class="agent-info-section">
+        <div class="info-section-title">
+          <span data-lang="ja">目的</span>
+          <span data-lang="en">Purpose</span>
+          <span data-lang="ko">목표</span>
+        </div>
+        <p class="info-section-body">
+          <span data-lang="ja">OpenAI Agents SDKのチュートリアルをベースに構築した入門エージェント。カップルの希望・予算・日程をヒアリングし、行き先・宿・アクティビティまで含む最適な新婚旅行プランを自律的に提案します。</span>
+          <span data-lang="en">A tutorial-based introductory agent built with the OpenAI Agents SDK. Listens to the couple's wishes, budget, and schedule to autonomously propose a complete honeymoon plan — destination, hotels, and activities included.</span>
+          <span data-lang="ko">OpenAI Agents SDK 튜토리얼을 베이스로 구축한 입문 에이전트. 커플의 요구사항·예산·일정을 청취하여 목적지·숙소·액티비티를 포함한 최적의 신혼여행 플랜을 자율적으로 제안합니다.</span>
+        </p>
+      </div>
+
+      <div class="agent-info-section">
+        <div class="info-section-title">
+          <span data-lang="ja">協業エージェント</span>
+          <span data-lang="en">Agent Roles</span>
+          <span data-lang="ko">협업 에이전트</span>
+        </div>
+        <div class="role-list">
+          <div class="role-item">
+            <div class="role-name">
+              <span data-lang="ja">🎤 ヒアリングエージェント</span>
+              <span data-lang="en">🎤 Requirement Agent</span>
+              <span data-lang="ko">🎤 요구사항 에이전트</span>
+            </div>
+            <div class="role-desc">
+              <span data-lang="ja">カップルの希望・予算・旅行スタイルをインタラクティブに収集する。</span>
+              <span data-lang="en">Interactively collects the couple's wishes, budget, and travel style.</span>
+              <span data-lang="ko">커플의 희망사항·예산·여행 스타일을 인터랙티브하게 수집합니다.</span>
+            </div>
+          </div>
+          <div class="role-item">
+            <div class="role-name">
+              <span data-lang="ja">🗺️ プランナーエージェント</span>
+              <span data-lang="en">🗺️ Planner Agent</span>
+              <span data-lang="ko">🗺️ 플래너 에이전트</span>
+            </div>
+            <div class="role-desc">
+              <span data-lang="ja">収集した要件をもとに、行き先・ホテル・アクティビティを調査・選定して旅行プランを策定する。</span>
+              <span data-lang="en">Researches and selects destinations, hotels, and activities based on collected requirements to build a travel plan.</span>
+              <span data-lang="ko">수집된 요구사항을 바탕으로 목적지·호텔·액티비티를 조사·선정하여 여행 플랜을 수립합니다.</span>
+            </div>
+          </div>
+          <div class="role-item">
+            <div class="role-name">
+              <span data-lang="ja">📄 レポートエージェント</span>
+              <span data-lang="en">📄 Report Agent</span>
+              <span data-lang="ko">📄 리포트 에이전트</span>
+            </div>
+            <div class="role-desc">
+              <span data-lang="ja">プランを日程表・費用見積もり・注意事項を含む読みやすいレポートに整形して出力する。</span>
+              <span data-lang="en">Formats the plan into a readable report with itinerary, cost estimate, and travel tips.</span>
+              <span data-lang="ko">플랜을 일정표·비용 견적·주의사항을 포함한 읽기 쉬운 리포트로 정형화하여 출력합니다.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKFLOW -->
+  <div class="section-block">
+    <div class="section-block-header">
+      <div class="section-block-title">
+        <span data-lang="ja">ワークフロー</span>
+        <span data-lang="en">Workflow</span>
+        <span data-lang="ko">워크플로우</span>
+      </div>
+    </div>
+    <div class="section-block-body">
+      <div class="flow-diagram">
+        <div class="flow-row">
+          <div class="flow-node input">💍 <span data-lang="ja">カップルからの要件入力</span><span data-lang="en">Couple's Requirements</span><span data-lang="ko">커플 요구사항 입력</span></div>
+        </div>
+        <div class="flow-down"></div>
+        <div class="flow-row">
+          <div class="flow-node agent-node">🎤 <span data-lang="ja">ヒアリングエージェント</span><span data-lang="en">Requirement Agent</span><span data-lang="ko">요구사항 에이전트</span></div>
+        </div>
+        <div class="flow-down"></div>
+        <div class="flow-split">
+          <div class="flow-branch">
+            <div class="flow-node tool-node">🌍 <span data-lang="ja">目的地調査</span><span data-lang="en">Destination Research</span><span data-lang="ko">목적지 조사</span></div>
+            <div class="flow-down"></div>
+            <div class="flow-node tool-node">🏨 <span data-lang="ja">ホテル検索</span><span data-lang="en">Hotel Search</span><span data-lang="ko">호텔 검색</span></div>
+          </div>
+          <div class="flow-branch">
+            <div class="flow-node agent-node">🗺️ <span data-lang="ja">プランナーエージェント</span><span data-lang="en">Planner Agent</span><span data-lang="ko">플래너 에이전트</span></div>
+            <div class="flow-down"></div>
+            <div class="flow-node tool-node">🎯 <span data-lang="ja">アクティビティ選定</span><span data-lang="en">Activity Selection</span><span data-lang="ko">액티비티 선정</span></div>
+          </div>
+        </div>
+        <div class="flow-down"></div>
+        <div class="flow-row">
+          <div class="flow-node agent-node">📄 <span data-lang="ja">レポートエージェント</span><span data-lang="en">Report Agent</span><span data-lang="ko">리포트 에이전트</span></div>
+        </div>
+        <div class="flow-down"></div>
+        <div class="flow-row">
+          <div class="flow-node output-node">🎉 <span data-lang="ja">新婚旅行プラン完成</span><span data-lang="en">Complete Honeymoon Plan</span><span data-lang="ko">신혼여행 플랜 완성</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEMO -->
+  <div class="section-block">
+    <div class="section-block-header">
+      <div class="section-block-title"><span data-lang="ja">デモ動画</span><span data-lang="en">Demo Video</span><span data-lang="ko">데모 영상</span></div>
+    </div>
+    <div class="section-block-body">
+      <div class="video-placeholder">
+        <div class="video-placeholder-icon">▶</div>
+        <div class="video-placeholder-text"><span data-lang="ja">デモ動画 — 準備中</span><span data-lang="en">Demo video — Coming soon</span><span data-lang="ko">데모 영상 — 준비 중</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECH + CTA -->
+  <div class="section-block">
+    <div class="section-block-header"><div class="section-block-title">Tech Stack</div></div>
+    <div class="section-block-body">
+      <div class="tech-tags">
+        <span class="tech-tag">OpenAI Agents SDK</span>
+        <span class="tech-tag">GPT-4o</span>
+        <span class="tech-tag">Handoff</span>
+        <span class="tech-tag">Tool Use</span>
+        <span class="tech-tag">OpenAI Traces</span>
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">Streamlit</span>
+      </div>
+    </div>
+    <div class="cta-row">
+      <a href="#" class="btn-cta-outline">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="#" class="btn-cta-primary"><span data-lang="ja">デモを試す →</span><span data-lang="en">Try Demo →</span><span data-lang="ko">데모 체험 →</span></a>
+    </div>
+  </div>
+</main>
+
+<script>
+function setLang(lang) {
+  document.body.className = 'lang-' + lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+}
+</script>
+</body>
+</html>
