@@ -161,53 +161,65 @@
           <span data-lang="ko">목표</span>
         </div>
         <p class="info-section-body">
-          <span data-lang="ja">OpenAI Agents SDKのチュートリアルをベースに構築した入門エージェント。カップルの希望・予算・日程をヒアリングし、行き先・宿・アクティビティまで含む最適な新婚旅行プランを自律的に提案します。</span>
-          <span data-lang="en">A tutorial-based introductory agent built with the OpenAI Agents SDK. Listens to the couple's wishes, budget, and schedule to autonomously propose a complete honeymoon plan — destination, hotels, and activities included.</span>
-          <span data-lang="ko">OpenAI Agents SDK 튜토리얼을 베이스로 구축한 입문 에이전트. 커플의 요구사항·예산·일정을 청취하여 목적지·숙소·액티비티를 포함한 최적의 신혼여행 플랜을 자율적으로 제안합니다.</span>
+          <span data-lang="ja">OpenAI Agents SDKで構築したマルチエージェント旅行プランニングアシスタント。ルーターエージェントが航空券・ホテル・スケジュールの専門エージェントへタスクを委譲し、入力ガードレールで無関係な質問をブロック。MCPサーバーと連携したリアルタイム検索でチャット形式の新婚旅行プランを提案します。</span>
+          <span data-lang="en">A multi-agent travel planning assistant built with the OpenAI Agents SDK. A router agent delegates tasks to specialized agents for flights, hotels, and itineraries. An input guardrail filters off-topic queries, while MCP server integration enables real-time search — all delivered through a conversational chat UI.</span>
+          <span data-lang="ko">OpenAI Agents SDK로 구축한 멀티 에이전트 여행 플래닝 어시스턴트. 라우터 에이전트가 항공·호텔·일정 전문 에이전트에게 태스크를 위임하고, 입력 가드레일로 무관한 질문을 차단합니다. MCP 서버 연계 실시간 검색으로 채팅 형식의 신혼여행 플랜을 제안합니다.</span>
         </p>
       </div>
 
       <div class="agent-info-section">
         <div class="info-section-title">
-          <span data-lang="ja">協業エージェント</span>
+          <span data-lang="ja">エージェント構成</span>
           <span data-lang="en">Agent Roles</span>
-          <span data-lang="ko">협업 에이전트</span>
+          <span data-lang="ko">에이전트 구성</span>
         </div>
         <div class="role-list">
           <div class="role-item">
             <div class="role-name">
-              <span data-lang="ja">🎤 ヒアリングエージェント</span>
-              <span data-lang="en">🎤 Requirement Agent</span>
-              <span data-lang="ko">🎤 요구사항 에이전트</span>
+              <span data-lang="ja">🧭 ルーターエージェント</span>
+              <span data-lang="en">🧭 Router Agent</span>
+              <span data-lang="ko">🧭 라우터 에이전트</span>
             </div>
             <div class="role-desc">
-              <span data-lang="ja">カップルの希望・予算・旅行スタイルをインタラクティブに収集する。</span>
-              <span data-lang="en">Interactively collects the couple's wishes, budget, and travel style.</span>
-              <span data-lang="ko">커플의 희망사항·예산·여행 스타일을 인터랙티브하게 수집합니다.</span>
+              <span data-lang="ja">ユーザーの意図を解析し、適切な専門エージェントへHandoffする司令塔。入力ガードレールで旅行無関係な質問を事前ブロックし、不要なAPI消費を削減する。</span>
+              <span data-lang="en">Analyzes user intent and hands off to the appropriate specialist agent. An input guardrail pre-filters off-topic questions to minimize unnecessary API costs.</span>
+              <span data-lang="ko">사용자 의도를 분석하고 적절한 전문 에이전트로 Handoff하는 사령탑. 입력 가드레일로 여행과 무관한 질문을 사전에 차단하여 불필요한 API 비용을 절감합니다.</span>
             </div>
           </div>
           <div class="role-item">
             <div class="role-name">
-              <span data-lang="ja">🗺️ プランナーエージェント</span>
-              <span data-lang="en">🗺️ Planner Agent</span>
-              <span data-lang="ko">🗺️ 플래너 에이전트</span>
+              <span data-lang="ja">✈️ フライトエージェント</span>
+              <span data-lang="en">✈️ Flight Agent</span>
+              <span data-lang="ko">✈️ 플라이트 에이전트</span>
             </div>
             <div class="role-desc">
-              <span data-lang="ja">収集した要件をもとに、行き先・ホテル・アクティビティを調査・選定して旅行プランを策定する。</span>
-              <span data-lang="en">Researches and selects destinations, hotels, and activities based on collected requirements to build a travel plan.</span>
-              <span data-lang="ko">수집된 요구사항을 바탕으로 목적지·호텔·액티비티를 조사·선정하여 여행 플랜을 수립합니다.</span>
+              <span data-lang="ja">flights-MCPサーバーと連携し、条件に合う航空便をリアルタイムで検索・提案する。</span>
+              <span data-lang="en">Connects to the flights-MCP server to search and suggest real-time flight options matching the user's conditions.</span>
+              <span data-lang="ko">flights-MCP 서버와 연계하여 조건에 맞는 항공편을 실시간으로 검색·제안합니다.</span>
             </div>
           </div>
           <div class="role-item">
             <div class="role-name">
-              <span data-lang="ja">📄 レポートエージェント</span>
-              <span data-lang="en">📄 Report Agent</span>
-              <span data-lang="ko">📄 리포트 에이전트</span>
+              <span data-lang="ja">🏨 ホテルエージェント</span>
+              <span data-lang="en">🏨 Hotel Agent</span>
+              <span data-lang="ko">🏨 호텔 에이전트</span>
             </div>
             <div class="role-desc">
-              <span data-lang="ja">プランを日程表・費用見積もり・注意事項を含む読みやすいレポートに整形して出力する。</span>
-              <span data-lang="en">Formats the plan into a readable report with itinerary, cost estimate, and travel tips.</span>
-              <span data-lang="ko">플랜을 일정표·비용 견적·주의사항을 포함한 읽기 쉬운 리포트로 정형화하여 출력합니다.</span>
+              <span data-lang="ja">Playwright MCPでGoogleマップをブラウザ自動操作し、周辺情報を含むホテル候補をリアルタイムで取得する。</span>
+              <span data-lang="en">Uses Playwright MCP to automate Google Maps in a real browser, fetching hotel candidates with live local information.</span>
+              <span data-lang="ko">Playwright MCP로 Google Maps를 브라우저 자동 조작하여 주변 정보가 포함된 호텔 후보를 실시간으로 취득합니다.</span>
+            </div>
+          </div>
+          <div class="role-item">
+            <div class="role-name">
+              <span data-lang="ja">🗓️ スケジュールエージェント</span>
+              <span data-lang="en">🗓️ Schedule Agent</span>
+              <span data-lang="ko">🗓️ 스케줄 에이전트</span>
+            </div>
+            <div class="role-desc">
+              <span data-lang="ja">航空・宿泊の確定情報を統合し、日程・アクティビティを組んだ旅程をPlan Boardにリアルタイム表示する。</span>
+              <span data-lang="en">Integrates confirmed flights and hotel data to build a full itinerary with activities, displayed live on the Plan Board sidebar.</span>
+              <span data-lang="ko">항공·숙박 확정 정보를 통합하여 일정·액티비티가 포함된 여정을 Plan Board에 실시간으로 표시합니다.</span>
             </div>
           </div>
         </div>
@@ -227,32 +239,37 @@
     <div class="section-block-body">
       <div class="flow-diagram">
         <div class="flow-row">
-          <div class="flow-node input">💍 <span data-lang="ja">カップルからの要件入力</span><span data-lang="en">Couple's Requirements</span><span data-lang="ko">커플 요구사항 입력</span></div>
+          <div class="flow-node input">💍 <span data-lang="ja">ユーザーのチャット入力</span><span data-lang="en">User Chat Input</span><span data-lang="ko">사용자 채팅 입력</span></div>
         </div>
         <div class="flow-down"></div>
         <div class="flow-row">
-          <div class="flow-node agent-node">🎤 <span data-lang="ja">ヒアリングエージェント</span><span data-lang="en">Requirement Agent</span><span data-lang="ko">요구사항 에이전트</span></div>
+          <div class="flow-node tool-node">🛡️ <span data-lang="ja">入力ガードレール</span><span data-lang="en">Input Guardrail</span><span data-lang="ko">입력 가드레일</span></div>
+        </div>
+        <div class="flow-down"></div>
+        <div class="flow-row">
+          <div class="flow-node agent-node">🧭 <span data-lang="ja">ルーターエージェント</span><span data-lang="en">Router Agent</span><span data-lang="ko">라우터 에이전트</span></div>
         </div>
         <div class="flow-down"></div>
         <div class="flow-split">
           <div class="flow-branch">
-            <div class="flow-node tool-node">🌍 <span data-lang="ja">目的地調査</span><span data-lang="en">Destination Research</span><span data-lang="ko">목적지 조사</span></div>
+            <div class="flow-node agent-node">✈️ <span data-lang="ja">フライト</span><span data-lang="en">Flight Agent</span><span data-lang="ko">플라이트</span></div>
             <div class="flow-down"></div>
-            <div class="flow-node tool-node">🏨 <span data-lang="ja">ホテル検索</span><span data-lang="en">Hotel Search</span><span data-lang="ko">호텔 검색</span></div>
+            <div class="flow-node tool-node">🔌 flights-MCP</div>
           </div>
           <div class="flow-branch">
-            <div class="flow-node agent-node">🗺️ <span data-lang="ja">プランナーエージェント</span><span data-lang="en">Planner Agent</span><span data-lang="ko">플래너 에이전트</span></div>
+            <div class="flow-node agent-node">🏨 <span data-lang="ja">ホテル</span><span data-lang="en">Hotel Agent</span><span data-lang="ko">호텔</span></div>
             <div class="flow-down"></div>
-            <div class="flow-node tool-node">🎯 <span data-lang="ja">アクティビティ選定</span><span data-lang="en">Activity Selection</span><span data-lang="ko">액티비티 선정</span></div>
+            <div class="flow-node tool-node">🌐 Playwright MCP</div>
+          </div>
+          <div class="flow-branch">
+            <div class="flow-node agent-node">🗓️ <span data-lang="ja">スケジュール</span><span data-lang="en">Schedule Agent</span><span data-lang="ko">스케줄</span></div>
+            <div class="flow-down"></div>
+            <div class="flow-node tool-node">📋 Plan Board</div>
           </div>
         </div>
         <div class="flow-down"></div>
         <div class="flow-row">
-          <div class="flow-node agent-node">📄 <span data-lang="ja">レポートエージェント</span><span data-lang="en">Report Agent</span><span data-lang="ko">리포트 에이전트</span></div>
-        </div>
-        <div class="flow-down"></div>
-        <div class="flow-row">
-          <div class="flow-node output-node">🎉 <span data-lang="ja">新婚旅行プラン完成</span><span data-lang="en">Complete Honeymoon Plan</span><span data-lang="ko">신혼여행 플랜 완성</span></div>
+          <div class="flow-node output-node">🎉 <span data-lang="ja">旅程リアルタイム表示</span><span data-lang="en">Live Itinerary Output</span><span data-lang="ko">여정 실시간 출력</span></div>
         </div>
       </div>
     </div>
@@ -277,20 +294,29 @@
     <div class="section-block-body">
       <div class="tech-tags">
         <span class="tech-tag">OpenAI Agents SDK</span>
-        <span class="tech-tag">GPT-4o</span>
+        <span class="tech-tag">GPT-4o-mini</span>
         <span class="tech-tag">Handoff</span>
-        <span class="tech-tag">Tool Use</span>
+        <span class="tech-tag">Input Guardrail</span>
+        <span class="tech-tag">flights-MCP</span>
+        <span class="tech-tag">Playwright MCP</span>
         <span class="tech-tag">OpenAI Traces</span>
         <span class="tech-tag">Python</span>
         <span class="tech-tag">Streamlit</span>
       </div>
     </div>
     <div class="cta-row">
-      <a href="#" class="btn-cta-outline">
+      <a href="https://github.com/minje-sung/honeymoon-planner" target="_blank" class="btn-cta-outline">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         GitHub
       </a>
-      <a href="#" class="btn-cta-primary"><span data-lang="ja">デモを試す →</span><span data-lang="en">Try Demo →</span><span data-lang="ko">데모 체험 →</span></a>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <a href="https://honeymoon-planner-minje-sung.streamlit.app/" target="_blank" class="btn-cta-primary"><span data-lang="ja">プロダクトを使う →</span><span data-lang="en">Open Product →</span><span data-lang="ko">프로덕트 열기 →</span></a>
+        <p style="font-family:'Space Mono',monospace; font-size:10px; color:var(--text-dim); line-height:1.6; max-width:320px;">
+          <span data-lang="ja">※ 配布版ではStreamlit Cloudの制限によりMCPサーバーをダミー関数ツールに置き換えています</span>
+          <span data-lang="en">※ In the deployed version, MCP servers are replaced with dummy function tools due to Streamlit Cloud constraints</span>
+          <span data-lang="ko">※ 배포 버전에서는 Streamlit Cloud의 제한으로 MCP 서버를 더미 함수 툴로 대체하고 있습니다</span>
+        </p>
+      </div>
     </div>
   </div>
 </main>
