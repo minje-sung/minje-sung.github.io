@@ -6,7 +6,7 @@
 <title>履歴書 — Sung Minje</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a0f;
@@ -30,6 +30,8 @@
     line-height: 1.7;
     overflow-x: hidden;
   }
+  body.lang-ko { font-family: 'Noto Sans KR', sans-serif; }
+  body.lang-en { font-family: 'Syne', sans-serif; }
 
   body::before {
     content: '';
@@ -73,8 +75,9 @@
     text-transform: uppercase;
     text-decoration: none;
   }
-
   .nav-logo-sep { color: var(--text-dim); font-weight: 400; letter-spacing: 0.1em; }
+
+  .nav-right { display: flex; align-items: center; gap: 20px; }
 
   .nav-back {
     font-family: 'Space Mono', monospace;
@@ -85,6 +88,33 @@
     transition: color 0.2s;
   }
   .nav-back:hover { color: var(--text); }
+
+  .lang-switcher {
+    display: flex;
+    gap: 4px;
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 4px;
+    border: 1px solid var(--border);
+  }
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active { background: var(--accent); color: white; }
+
+  [data-lang] { display: none; }
+  .lang-ja [data-lang="ja"] { display: block; }
+  .lang-en [data-lang="en"] { display: block; }
+  .lang-ko [data-lang="ko"] { display: block; }
 
   .orb {
     position: fixed;
@@ -160,7 +190,7 @@
 
   .resume-row {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 180px 1fr;
     gap: 24px;
     padding: 12px 0;
     border-bottom: 1px solid var(--border);
@@ -187,6 +217,12 @@
     font-size: 13px;
   }
 
+  .sub-note {
+    color: var(--text-dim);
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
   .notice {
     margin-top: 48px;
     padding: 20px 28px;
@@ -201,83 +237,187 @@
   }
 
   @media (max-width: 600px) {
-    nav { padding: 16px 24px; }
+    nav { padding: 16px 20px; }
+    .nav-right { gap: 12px; }
     main { padding: 100px 24px 60px; }
     .resume-row { grid-template-columns: 1fr; gap: 4px; }
   }
 </style>
 </head>
-<body>
+<body class="lang-ja">
 <div class="grid-bg"></div>
 <div class="orb orb-1"></div>
 
 <nav>
   <a href="index.html" class="nav-logo">SUNG MINJE <span class="nav-logo-sep">/ RESUME</span></a>
-  <a href="index.html" class="nav-back">← ポートフォリオに戻る</a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-back">
+      <span data-lang="ja">← ポートフォリオ</span>
+      <span data-lang="en">← Portfolio</span>
+      <span data-lang="ko">← 포트폴리오</span>
+    </a>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('ja')">JA</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('ko')">KO</button>
+    </div>
+  </div>
 </nav>
 
 <main>
   <div class="page-label">Documents</div>
-  <h1 class="page-title">履歴書</h1>
+  <h1 class="page-title">
+    <span data-lang="ja">履歴書</span>
+    <span data-lang="en">Resume</span>
+    <span data-lang="ko">이력서</span>
+  </h1>
 
   <!-- 基本情報 -->
   <div class="resume-block">
     <div class="resume-block-header">
-      <div class="resume-block-title">基本情報</div>
+      <div class="resume-block-title">
+        <span data-lang="ja">基本情報</span>
+        <span data-lang="en">Personal Info</span>
+        <span data-lang="ko">기본 정보</span>
+      </div>
     </div>
     <div class="resume-block-body">
       <div class="resume-row">
-        <span class="resume-key">氏名</span>
-        <span class="resume-val">ソン ミンジェ（成 民濟）</span>
+        <span class="resume-key">
+          <span data-lang="ja">氏名</span>
+          <span data-lang="en">Full Name</span>
+          <span data-lang="ko">성명</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">ソン ミンジェ（成 民濟）</span>
+          <span data-lang="en">Sung Minje (成 民濟)</span>
+          <span data-lang="ko">성민제（成 民濟 / Sung Minje）</span>
+        </span>
       </div>
       <div class="resume-row">
-        <span class="resume-key">氏名（英語）</span>
+        <span class="resume-key">
+          <span data-lang="ja">氏名（英語）</span>
+          <span data-lang="en">Name (Romanized)</span>
+          <span data-lang="ko">성명 (로마자)</span>
+        </span>
         <span class="resume-val">Sung Minje</span>
       </div>
       <div class="resume-row">
-        <span class="resume-key">生年月日</span>
-        <span class="resume-val"><span class="placeholder">— （要記入）</span></span>
+        <span class="resume-key">
+          <span data-lang="ja">生年月日</span>
+          <span data-lang="en">Date of Birth</span>
+          <span data-lang="ko">생년월일</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja"><span class="placeholder">— （要記入）</span></span>
+          <span data-lang="en"><span class="placeholder">— (to be filled)</span></span>
+          <span data-lang="ko"><span class="placeholder">— （기입 필요）</span></span>
+        </span>
       </div>
       <div class="resume-row">
-        <span class="resume-key">現住所</span>
-        <span class="resume-val">東京都</span>
+        <span class="resume-key">
+          <span data-lang="ja">現住所</span>
+          <span data-lang="en">Address</span>
+          <span data-lang="ko">현주소</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">東京都</span>
+          <span data-lang="en">Tokyo, Japan</span>
+          <span data-lang="ko">도쿄도, 일본</span>
+        </span>
       </div>
       <div class="resume-row">
-        <span class="resume-key">電話番号</span>
-        <span class="resume-val"><span class="placeholder">— （要記入）</span></span>
+        <span class="resume-key">
+          <span data-lang="ja">電話番号</span>
+          <span data-lang="en">Phone</span>
+          <span data-lang="ko">전화번호</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja"><span class="placeholder">— （要記入）</span></span>
+          <span data-lang="en"><span class="placeholder">— (to be filled)</span></span>
+          <span data-lang="ko"><span class="placeholder">— （기입 필요）</span></span>
+        </span>
       </div>
       <div class="resume-row">
-        <span class="resume-key">メールアドレス</span>
+        <span class="resume-key">
+          <span data-lang="ja">メールアドレス</span>
+          <span data-lang="en">Email</span>
+          <span data-lang="ko">이메일</span>
+        </span>
         <span class="resume-val">jaysung00@gmail.com</span>
       </div>
       <div class="resume-row">
-        <span class="resume-key">国籍</span>
-        <span class="resume-val">韓国</span>
+        <span class="resume-key">
+          <span data-lang="ja">国籍</span>
+          <span data-lang="en">Nationality</span>
+          <span data-lang="ko">국적</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">韓国</span>
+          <span data-lang="en">Korean</span>
+          <span data-lang="ko">한국</span>
+        </span>
       </div>
       <div class="resume-row">
-        <span class="resume-key">在留資格</span>
-        <span class="resume-val"><span class="placeholder">— （要記入）</span></span>
+        <span class="resume-key">
+          <span data-lang="ja">在留資格</span>
+          <span data-lang="en">Visa Status</span>
+          <span data-lang="ko">체류 자격</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja"><span class="placeholder">— （要記入）</span></span>
+          <span data-lang="en"><span class="placeholder">— (to be filled)</span></span>
+          <span data-lang="ko"><span class="placeholder">— （기입 필요）</span></span>
+        </span>
       </div>
     </div>
   </div>
 
-  <!-- 言語 -->
+  <!-- 言語能力 -->
   <div class="resume-block">
     <div class="resume-block-header">
-      <div class="resume-block-title">言語能力</div>
+      <div class="resume-block-title">
+        <span data-lang="ja">言語能力</span>
+        <span data-lang="en">Languages</span>
+        <span data-lang="ko">언어 능력</span>
+      </div>
     </div>
     <div class="resume-block-body">
       <div class="resume-row">
-        <span class="resume-key">韓国語</span>
-        <span class="resume-val">母語</span>
+        <span class="resume-key">
+          <span data-lang="ja">韓国語</span>
+          <span data-lang="en">Korean</span>
+          <span data-lang="ko">한국어</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">母語</span>
+          <span data-lang="en">Native</span>
+          <span data-lang="ko">모국어</span>
+        </span>
       </div>
       <div class="resume-row">
-        <span class="resume-key">日本語</span>
-        <span class="resume-val">準ネイティブ（一橋大学・東京工業大学にて日本語で修学）</span>
+        <span class="resume-key">
+          <span data-lang="ja">日本語</span>
+          <span data-lang="en">Japanese</span>
+          <span data-lang="ko">일본어</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">準ネイティブ（一橋大学・東京工業大学にて日本語で修学）</span>
+          <span data-lang="en">Near-Native (studied entirely in Japanese at Hitotsubashi University and Tokyo Institute of Technology)</span>
+          <span data-lang="ko">준네이티브 (히토쓰바시 대학교 및 도쿄공업대학교에서 일본어로 수학)</span>
+        </span>
       </div>
       <div class="resume-row">
-        <span class="resume-key">英語</span>
-        <span class="resume-val">ビジネスレベル</span>
+        <span class="resume-key">
+          <span data-lang="ja">英語</span>
+          <span data-lang="en">English</span>
+          <span data-lang="ko">영어</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">ビジネスレベル</span>
+          <span data-lang="en">Business Level</span>
+          <span data-lang="ko">비즈니스 레벨</span>
+        </span>
       </div>
     </div>
   </div>
@@ -285,78 +425,221 @@
   <!-- 学歴 -->
   <div class="resume-block">
     <div class="resume-block-header">
-      <div class="resume-block-title">学歴</div>
+      <div class="resume-block-title">
+        <span data-lang="ja">学歴</span>
+        <span data-lang="en">Education</span>
+        <span data-lang="ko">학력</span>
+      </div>
     </div>
     <div class="resume-block-body">
+
       <div class="resume-row">
-        <span class="resume-key">2011年 2月</span>
-        <span class="resume-val">ソウル文井高等学校 卒業</span>
-      </div>
-      <div class="resume-row">
-        <span class="resume-key">2011年 3月</span>
-        <span class="resume-val">建国大学（韓国） 新素材工学科 入学</span>
-      </div>
-      <div class="resume-row">
-        <span class="resume-key">2013年 2月</span>
-        <span class="resume-val">大韓民国 空軍 入隊（兵役）</span>
-      </div>
-      <div class="resume-row">
-        <span class="resume-key">2015年 2月</span>
-        <span class="resume-val">大韓民国 空軍 除隊</span>
-      </div>
-      <div class="resume-row">
-        <span class="resume-key">2016年 2月</span>
+        <span class="resume-key">
+          <span data-lang="ja">2011年 2月</span>
+          <span data-lang="en">Feb. 2011</span>
+          <span data-lang="ko">2011년 2월</span>
+        </span>
         <span class="resume-val">
-          建国大学（韓国） 新素材工学科 中退<br>
-          <small style="color:var(--text-dim);font-size:12px;">日本で経済学を学ぶと決めたため、3年次に中退。</small>
+          <span data-lang="ja">ソウル文井高等学校 卒業</span>
+          <span data-lang="en">Graduated from Seoul Munjeong High School</span>
+          <span data-lang="ko">서울 문정고등학교 졸업</span>
         </span>
       </div>
+
       <div class="resume-row">
-        <span class="resume-key">2016年 — 2017年</span>
+        <span class="resume-key">
+          <span data-lang="ja">2011年 3月</span>
+          <span data-lang="en">Mar. 2011</span>
+          <span data-lang="ko">2011년 3월</span>
+        </span>
         <span class="resume-val">
-          日本語及び大学受験準備期間（約1年）<br>
-          <small style="color:var(--text-dim);font-size:12px;">一橋大学受験に向け、日本語および経済学の基礎を独学。</small>
+          <span data-lang="ja">建国大学（韓国） 新素材工学科 入学</span>
+          <span data-lang="en">Enrolled at Konkuk University (Korea), Dept. of Advanced Materials Engineering</span>
+          <span data-lang="ko">건국대학교 신소재공학과 입학</span>
         </span>
       </div>
+
       <div class="resume-row">
-        <span class="resume-key">2017年 4月</span>
+        <span class="resume-key">
+          <span data-lang="ja">2013年 2月</span>
+          <span data-lang="en">Feb. 2013</span>
+          <span data-lang="ko">2013년 2월</span>
+        </span>
         <span class="resume-val">
-          一橋大学 経済学部 入学<br>
-          <small style="color:var(--text-dim);font-size:12px;">ゼミ：金融工学</small>
+          <span data-lang="ja">大韓民国 空軍 入隊（兵役）</span>
+          <span data-lang="en">Enlisted in Republic of Korea Air Force (Mandatory Military Service)</span>
+          <span data-lang="ko">대한민국 공군 입대 (병역)</span>
         </span>
       </div>
+
       <div class="resume-row">
-        <span class="resume-key">2021年 3月</span>
+        <span class="resume-key">
+          <span data-lang="ja">2015年 2月</span>
+          <span data-lang="en">Feb. 2015</span>
+          <span data-lang="ko">2015년 2월</span>
+        </span>
         <span class="resume-val">
-          一橋大学 経済学部 卒業<br>
-          <small style="color:var(--text-dim);font-size:12px;">上位10%の成績にて修了。米国博士課程進学を検討後、国内の因果推論研究室への進学を決意。</small>
+          <span data-lang="ja">大韓民国 空軍 除隊</span>
+          <span data-lang="en">Discharged from Republic of Korea Air Force</span>
+          <span data-lang="ko">대한민국 공군 제대</span>
         </span>
       </div>
+
       <div class="resume-row">
-        <span class="resume-key">2022年 4月</span>
+        <span class="resume-key">
+          <span data-lang="ja">2016年 2月</span>
+          <span data-lang="en">Feb. 2016</span>
+          <span data-lang="ko">2016년 2월</span>
+        </span>
         <span class="resume-val">
-          東京工業大学 工学院 経営工学系 入学<br>
-          <small style="color:var(--text-dim);font-size:12px;">因果推論を専攻。株式会社リクルートとの共同研究に従事。</small>
+          <span data-lang="ja">
+            建国大学（韓国） 新素材工学科 中退<br>
+            <span class="sub-note">日本で経済学を学ぶと決めたため、3年次に中退。</span>
+          </span>
+          <span data-lang="en">
+            Withdrew from Konkuk University (Korea), Dept. of Advanced Materials Engineering<br>
+            <span class="sub-note">Decided to study economics in Japan; withdrew after completing 3rd year.</span>
+          </span>
+          <span data-lang="ko">
+            건국대학교 신소재공학과 중퇴<br>
+            <span class="sub-note">일본에서 경제학을 공부하기로 결정하여 3학년 수료 후 중퇴.</span>
+          </span>
         </span>
       </div>
+
       <div class="resume-row">
-        <span class="resume-key">2024年 3月</span>
-        <span class="resume-val">東京工業大学 工学院 経営工学系 修了</span>
+        <span class="resume-key">
+          <span data-lang="ja">2016年 — 2017年</span>
+          <span data-lang="en">2016 — 2017</span>
+          <span data-lang="ko">2016년 — 2017년</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">
+            日本語及び大学受験準備期間（約1年）<br>
+            <span class="sub-note">一橋大学受験に向け、日本語および経済学の基礎を独学。</span>
+          </span>
+          <span data-lang="en">
+            Japanese Language & University Entrance Preparation (~1 year)<br>
+            <span class="sub-note">Self-studied Japanese and economics fundamentals in preparation for Hitotsubashi University entrance exam.</span>
+          </span>
+          <span data-lang="ko">
+            일본어 및 대학 수험 준비 기간 (약 1년)<br>
+            <span class="sub-note">히토쓰바시 대학교 입시를 위해 일본어와 경제학 기초를 독학.</span>
+          </span>
+        </span>
       </div>
+
+      <div class="resume-row">
+        <span class="resume-key">
+          <span data-lang="ja">2017年 4月</span>
+          <span data-lang="en">Apr. 2017</span>
+          <span data-lang="ko">2017년 4월</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">
+            一橋大学 経済学部 入学<br>
+            <span class="sub-note">ゼミ：金融工学</span>
+          </span>
+          <span data-lang="en">
+            Enrolled at Hitotsubashi University, Faculty of Economics<br>
+            <span class="sub-note">Seminar: Financial Engineering</span>
+          </span>
+          <span data-lang="ko">
+            히토쓰바시 대학교 경제학부 입학<br>
+            <span class="sub-note">세미나: 금융공학</span>
+          </span>
+        </span>
+      </div>
+
+      <div class="resume-row">
+        <span class="resume-key">
+          <span data-lang="ja">2021年 3月</span>
+          <span data-lang="en">Mar. 2021</span>
+          <span data-lang="ko">2021년 3월</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">
+            一橋大学 経済学部 卒業<br>
+            <span class="sub-note">上位10%の成績にて修了。米国博士課程進学を検討後、国内の因果推論研究室への進学を決意。</span>
+          </span>
+          <span data-lang="en">
+            Graduated from Hitotsubashi University, Faculty of Economics<br>
+            <span class="sub-note">Top 10% of class. Considered US PhD programs before deciding to pursue causal inference research in Japan.</span>
+          </span>
+          <span data-lang="ko">
+            히토쓰바시 대학교 경제학부 졸업<br>
+            <span class="sub-note">상위 10% 성적 수료. 미국 박사 과정 진학을 검토 후, 국내 인과추론 연구실 진학을 결정.</span>
+          </span>
+        </span>
+      </div>
+
+      <div class="resume-row">
+        <span class="resume-key">
+          <span data-lang="ja">2022年 4月</span>
+          <span data-lang="en">Apr. 2022</span>
+          <span data-lang="ko">2022년 4월</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">
+            東京工業大学 工学院 経営工学系 入学<br>
+            <span class="sub-note">因果推論を専攻。株式会社リクルートとの共同研究に従事。</span>
+          </span>
+          <span data-lang="en">
+            Enrolled at Tokyo Institute of Technology, School of Engineering (Industrial Engineering & Economics)<br>
+            <span class="sub-note">Specialization: Causal Inference. Engaged in joint research with Recruit Co., Ltd.</span>
+          </span>
+          <span data-lang="ko">
+            도쿄공업대학교 공학원 경영공학계 입학<br>
+            <span class="sub-note">인과추론 전공. 주식회사 리쿠르트와의 공동 연구 참여.</span>
+          </span>
+        </span>
+      </div>
+
+      <div class="resume-row">
+        <span class="resume-key">
+          <span data-lang="ja">2024年 3月</span>
+          <span data-lang="en">Mar. 2024</span>
+          <span data-lang="ko">2024년 3월</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">東京工業大学 工学院 経営工学系 修了</span>
+          <span data-lang="en">Graduated from Tokyo Institute of Technology, School of Engineering</span>
+          <span data-lang="ko">도쿄공업대학교 공학원 경영공학계 수료</span>
+        </span>
+      </div>
+
     </div>
   </div>
 
   <!-- 職歴 -->
   <div class="resume-block">
     <div class="resume-block-header">
-      <div class="resume-block-title">職歴</div>
+      <div class="resume-block-title">
+        <span data-lang="ja">職歴</span>
+        <span data-lang="en">Work History</span>
+        <span data-lang="ko">직력</span>
+      </div>
     </div>
     <div class="resume-block-body">
       <div class="resume-row">
-        <span class="resume-key">2024年 4月 — 現在</span>
+        <span class="resume-key">
+          <span data-lang="ja">2024年 4月 — 現在</span>
+          <span data-lang="en">Apr. 2024 — Present</span>
+          <span data-lang="ko">2024년 4월 — 현재</span>
+        </span>
         <span class="resume-val">
-          株式会社博報堂 入社<br>
-          <small style="color:var(--text-dim);font-size:12px;">データサイエンティスト。マーケティングデータの分析・予測モデル構築・ダッシュボード設計に従事。</small>
+          <span data-lang="ja">
+            株式会社博報堂 入社<br>
+            <span class="sub-note">データサイエンティスト。マーケティングデータの分析・予測モデル構築・ダッシュボード設計に従事。</span>
+          </span>
+          <span data-lang="en">
+            Joined Hakuhodo Inc.<br>
+            <span class="sub-note">Data Scientist. Responsible for marketing data analysis, predictive modeling, and dashboard design.</span>
+          </span>
+          <span data-lang="ko">
+            주식회사 하쿠호도 입사<br>
+            <span class="sub-note">데이터 사이언티스트. 마케팅 데이터 분석·예측 모델 구축·대시보드 설계 담당.</span>
+          </span>
         </span>
       </div>
     </div>
@@ -365,25 +648,53 @@
   <!-- 資格・その他 -->
   <div class="resume-block">
     <div class="resume-block-header">
-      <div class="resume-block-title">資格・その他</div>
+      <div class="resume-block-title">
+        <span data-lang="ja">資格・その他</span>
+        <span data-lang="en">Qualifications & Other</span>
+        <span data-lang="ko">자격 · 기타</span>
+      </div>
     </div>
     <div class="resume-block-body">
       <div class="resume-row">
-        <span class="resume-key">兵役</span>
-        <span class="resume-val">大韓民国 空軍 服務完了（2013年2月 — 2015年2月）</span>
+        <span class="resume-key">
+          <span data-lang="ja">兵役</span>
+          <span data-lang="en">Military Service</span>
+          <span data-lang="ko">병역</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja">大韓民国 空軍 服務完了（2013年2月 — 2015年2月）</span>
+          <span data-lang="en">Republic of Korea Air Force — Service Completed (Feb. 2013 — Feb. 2015)</span>
+          <span data-lang="ko">대한민국 공군 복무 완료 (2013년 2월 — 2015년 2월)</span>
+        </span>
       </div>
       <div class="resume-row">
-        <span class="resume-key">資格・検定</span>
-        <span class="resume-val"><span class="placeholder">— （要記入）</span></span>
+        <span class="resume-key">
+          <span data-lang="ja">資格・検定</span>
+          <span data-lang="en">Certifications</span>
+          <span data-lang="ko">자격 · 검정</span>
+        </span>
+        <span class="resume-val">
+          <span data-lang="ja"><span class="placeholder">— （要記入）</span></span>
+          <span data-lang="en"><span class="placeholder">— (to be filled)</span></span>
+          <span data-lang="ko"><span class="placeholder">— （기입 필요）</span></span>
+        </span>
       </div>
     </div>
   </div>
 
   <div class="notice">
-    ※ 斜体・グレーのフィールドは随時更新予定です。<br>
-    ※ Fields in italic/gray are to be updated as needed.
+    <span data-lang="ja">※ 斜体・グレーのフィールドは随時更新予定です。</span>
+    <span data-lang="en">※ Fields in italic/gray are to be updated as needed.</span>
+    <span data-lang="ko">※ 이탤릭·회색 필드는 순차적으로 업데이트 예정입니다.</span>
   </div>
 </main>
 
+<script>
+function setLang(lang) {
+  document.body.className = 'lang-' + lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+}
+</script>
 </body>
 </html>

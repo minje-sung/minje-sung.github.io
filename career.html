@@ -6,7 +6,7 @@
 <title>職務経歴書 — Sung Minje</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a0f;
@@ -31,6 +31,8 @@
     line-height: 1.7;
     overflow-x: hidden;
   }
+  body.lang-ko { font-family: 'Noto Sans KR', sans-serif; }
+  body.lang-en { font-family: 'Syne', sans-serif; }
 
   body::before {
     content: '';
@@ -76,6 +78,8 @@
   }
   .nav-logo-sep { color: var(--text-dim); font-weight: 400; letter-spacing: 0.1em; }
 
+  .nav-right { display: flex; align-items: center; gap: 20px; }
+
   .nav-back {
     font-family: 'Space Mono', monospace;
     font-size: 12px;
@@ -85,6 +89,33 @@
     transition: color 0.2s;
   }
   .nav-back:hover { color: var(--text); }
+
+  .lang-switcher {
+    display: flex;
+    gap: 4px;
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 4px;
+    border: 1px solid var(--border);
+  }
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active { background: var(--accent); color: white; }
+
+  [data-lang] { display: none; }
+  .lang-ja [data-lang="ja"] { display: block; }
+  .lang-en [data-lang="en"] { display: block; }
+  .lang-ko [data-lang="ko"] { display: block; }
 
   .orb {
     position: fixed;
@@ -153,9 +184,7 @@
   .summary-box strong { color: var(--text); font-weight: 500; }
 
   /* CAREER SECTION */
-  .career-section {
-    margin-bottom: 60px;
-  }
+  .career-section { margin-bottom: 60px; }
 
   .career-section-label {
     font-family: 'Space Mono', monospace;
@@ -280,9 +309,7 @@
     border-collapse: collapse;
   }
 
-  .skills-table tr {
-    border-bottom: 1px solid var(--border);
-  }
+  .skills-table tr { border-bottom: 1px solid var(--border); }
   .skills-table tr:last-child { border-bottom: none; }
 
   .skills-table td {
@@ -329,54 +356,121 @@
   }
 
   @media (max-width: 600px) {
-    nav { padding: 16px 24px; }
+    nav { padding: 16px 20px; }
+    .nav-right { gap: 12px; }
     main { padding: 100px 24px 60px; }
     .career-header { flex-direction: column; gap: 4px; }
     .skills-table td:first-child { width: 120px; }
   }
 </style>
 </head>
-<body>
+<body class="lang-ja">
 <div class="grid-bg"></div>
 <div class="orb orb-1"></div>
 
 <nav>
   <a href="index.html" class="nav-logo">SUNG MINJE <span class="nav-logo-sep">/ CAREER</span></a>
-  <a href="index.html" class="nav-back">← ポートフォリオに戻る</a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-back">
+      <span data-lang="ja">← ポートフォリオ</span>
+      <span data-lang="en">← Portfolio</span>
+      <span data-lang="ko">← 포트폴리오</span>
+    </a>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('ja')">JA</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('ko')">KO</button>
+    </div>
+  </div>
 </nav>
 
 <main>
   <div class="page-label">Documents</div>
-  <h1 class="page-title">職務経歴書</h1>
-  <p class="page-subtitle">Career Detail — Sung Minje</p>
+  <h1 class="page-title">
+    <span data-lang="ja">職務経歴書</span>
+    <span data-lang="en">Career Profile</span>
+    <span data-lang="ko">직무경력서</span>
+  </h1>
+  <p class="page-subtitle">
+    <span data-lang="ja">Career Detail — Sung Minje</span>
+    <span data-lang="en">Career Detail — Sung Minje</span>
+    <span data-lang="ko">경력 상세 — 성민제</span>
+  </p>
 
   <!-- 自己PR -->
   <div class="summary-box">
-    広告代理店でデータサイエンティストとして<strong>マーケティングデータの分析・予測モデル構築・ダッシュボード設計</strong>を担当してきました。
-    AIエージェント技術の急速な進化を目の当たりにし、「分析して提示する」ツールから
-    「<strong>自律的に判断して実行する</strong>」エージェントへの転換点にいると確信。
-    OpenAI Agents SDK・Google ADK・LangGraph を用いた実務向けAIエージェント開発へのキャリアチェンジを目指しています。
+    <span data-lang="ja">
+      広告代理店でデータサイエンティストとして<strong>マーケティングデータの分析・予測モデル構築・ダッシュボード設計</strong>を担当してきました。
+      AIエージェント技術の急速な進化を目の当たりにし、「分析して提示する」ツールから
+      「<strong>自律的に判断して実行する</strong>」エージェントへの転換点にいると確信。
+      OpenAI Agents SDK・Google ADK・LangGraph を用いた実務向けAIエージェント開発へのキャリアチェンジを目指しています。
+    </span>
+    <span data-lang="en">
+      As a Data Scientist at an advertising agency, I have been responsible for <strong>marketing data analysis, predictive modeling, and dashboard design</strong>.
+      Witnessing the rapid evolution of AI agent technology, I am convinced we stand at a turning point — shifting from tools that
+      "<strong>analyze and present</strong>" to agents that "<strong>autonomously judge and act</strong>."
+      I am pursuing a career transition into practical AI agent development using the OpenAI Agents SDK, Google ADK, and LangGraph.
+    </span>
+    <span data-lang="ko">
+      광고대행사에서 데이터 사이언티스트로서 <strong>마케팅 데이터 분석·예측 모델 구축·대시보드 설계</strong>를 담당해왔습니다.
+      AI 에이전트 기술의 급격한 진화를 눈앞에서 목격하며, '분석하여 제시하는' 도구에서
+      '<strong>자율적으로 판단하고 실행하는</strong>' 에이전트로의 전환점에 있다고 확신합니다.
+      OpenAI Agents SDK·Google ADK·LangGraph를 활용한 실무용 AI 에이전트 개발로의 커리어 전환을 목표로 하고 있습니다.
+    </span>
   </div>
 
   <!-- 職務経歴 -->
   <div class="career-section">
-    <div class="career-section-label">職務経歴</div>
+    <div class="career-section-label">
+      <span data-lang="ja">職務経歴</span>
+      <span data-lang="en">Work Experience</span>
+      <span data-lang="ko">직무 경력</span>
+    </div>
 
     <div class="career-item">
       <div class="career-header">
-        <div class="career-role">データサイエンティスト</div>
-        <div class="career-period">2022年 — 現在</div>
+        <div class="career-role">
+          <span data-lang="ja">データサイエンティスト</span>
+          <span data-lang="en">Data Scientist</span>
+          <span data-lang="ko">데이터 사이언티스트</span>
+        </div>
+        <div class="career-period">
+          <span data-lang="ja">2024年 4月 — 現在</span>
+          <span data-lang="en">Apr. 2024 — Present</span>
+          <span data-lang="ko">2024년 4월 — 현재</span>
+        </div>
       </div>
-      <div class="career-company">広告代理店（<span style="color:var(--text-dim)">社名は応募時に開示</span>） — 東京</div>
+      <div class="career-company">
+        <span data-lang="ja">広告代理店（<span style="color:var(--text-dim)">社名は応募時に開示</span>） — 東京</span>
+        <span data-lang="en">Advertising Agency (<span style="color:var(--text-dim)">company name disclosed upon application</span>) — Tokyo</span>
+        <span data-lang="ko">광고대행사 (<span style="color:var(--text-dim)">사명은 응모 시 공개</span>) — 도쿄</span>
+      </div>
       <p class="career-desc">
-        大手クライアントのマーケティングデータを担当。データ基盤の整備から予測モデルの実装・運用まで一気通貫で対応。
-        Python・SQL・BigQueryを中心とした分析環境でチームの生産性向上に貢献。
+        <span data-lang="ja">大手クライアントのマーケティングデータを担当。データ基盤の整備から予測モデルの実装・運用まで一気通貫で対応。Python・SQL・BigQueryを中心とした分析環境でチームの生産性向上に貢献。</span>
+        <span data-lang="en">Responsible for marketing data of major clients. Handled everything from data infrastructure setup to predictive model implementation and operations. Contributed to team productivity through an analytics stack centered on Python, SQL, and BigQuery.</span>
+        <span data-lang="ko">대형 클라이언트의 마케팅 데이터를 담당. 데이터 기반 정비부터 예측 모델 구현·운용까지 일관되게 대응. Python·SQL·BigQuery를 중심으로 한 분석 환경에서 팀 생산성 향상에 기여.</span>
       </p>
       <ul class="career-achievements">
-        <li>顧客行動予測モデルの構築・本番運用（精度改善率 <span style="color:var(--text-dim)">—%</span>）</li>
-        <li>Tableauを用いた経営ダッシュボードの設計・社内展開</li>
-        <li>レポート自動化によって週次作業工数を削減</li>
-        <li>社内インタビュー掲載（<a href="https://hakusuku.jp/recruit/person/person-45/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">hakusuku.jp ↗</a>）</li>
+        <li>
+          <span data-lang="ja">顧客行動予測モデルの構築・本番運用（精度改善率 <span style="color:var(--text-dim)">—%</span>）</span>
+          <span data-lang="en">Built and deployed customer behavior prediction models to production (accuracy improvement: <span style="color:var(--text-dim)">—%</span>)</span>
+          <span data-lang="ko">고객 행동 예측 모델 구축 및 본番 운용 (정확도 개선율 <span style="color:var(--text-dim)">—%</span>)</span>
+        </li>
+        <li>
+          <span data-lang="ja">Tableauを用いた経営ダッシュボードの設計・社内展開</span>
+          <span data-lang="en">Designed and rolled out management dashboards using Tableau</span>
+          <span data-lang="ko">Tableau를 활용한 경영 대시보드 설계 및 사내 도입</span>
+        </li>
+        <li>
+          <span data-lang="ja">レポート自動化によって週次作業工数を削減</span>
+          <span data-lang="en">Reduced weekly reporting workload through automation</span>
+          <span data-lang="ko">보고서 자동화를 통한 주간 작업 공수 절감</span>
+        </li>
+        <li>
+          <span data-lang="ja">社内インタビュー掲載（<a href="https://hakusuku.jp/recruit/person/person-45/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">hakusuku.jp ↗</a>）</span>
+          <span data-lang="en">Featured in internal interview article (<a href="https://hakusuku.jp/recruit/person/person-45/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">hakusuku.jp ↗</a>)</span>
+          <span data-lang="ko">사내 인터뷰 게재 (<a href="https://hakusuku.jp/recruit/person/person-45/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">hakusuku.jp ↗</a>)</span>
+        </li>
       </ul>
       <div class="career-tags">
         <span class="career-tag">Python</span>
@@ -390,17 +484,43 @@
 
     <div class="career-item">
       <div class="career-header">
-        <div class="career-role">データアナリスト</div>
-        <div class="career-period">2020年 — 2022年</div>
+        <div class="career-role">
+          <span data-lang="ja">データアナリスト</span>
+          <span data-lang="en">Data Analyst</span>
+          <span data-lang="ko">데이터 애널리스트</span>
+        </div>
+        <div class="career-period">
+          <span data-lang="ja">2020年 — 2022年</span>
+          <span data-lang="en">2020 — 2022</span>
+          <span data-lang="ko">2020년 — 2022년</span>
+        </div>
       </div>
-      <div class="career-company">マーケティング会社（<span style="color:var(--text-dim)">社名は応募時に開示</span>）</div>
+      <div class="career-company">
+        <span data-lang="ja">マーケティング会社（<span style="color:var(--text-dim)">社名は応募時に開示</span>）</span>
+        <span data-lang="en">Marketing Company (<span style="color:var(--text-dim)">company name disclosed upon application</span>)</span>
+        <span data-lang="ko">마케팅 회사 (<span style="color:var(--text-dim)">사명은 응모 시 공개</span>)</span>
+      </div>
       <p class="career-desc">
-        広告効果測定・ABテスト設計・定期レポートの自動化を担当。データドリブンな意思決定文化の醸成に貢献。
+        <span data-lang="ja">広告効果測定・ABテスト設計・定期レポートの自動化を担当。データドリブンな意思決定文化の醸成に貢献。</span>
+        <span data-lang="en">Responsible for ad effectiveness measurement, A/B test design, and automated reporting. Contributed to building a data-driven decision-making culture.</span>
+        <span data-lang="ko">광고 효과 측정·AB 테스트 설계·정기 보고서 자동화 담당. 데이터 드리븐 의사결정 문화 조성에 기여.</span>
       </p>
       <ul class="career-achievements">
-        <li>ABテスト設計・統計的有意性の検証フレームワーク構築</li>
-        <li>定期レポートのPython自動化（月次 → 週次化を実現）</li>
-        <li>Tableau経営ダッシュボードの設計・導入支援</li>
+        <li>
+          <span data-lang="ja">ABテスト設計・統計的有意性の検証フレームワーク構築</span>
+          <span data-lang="en">Built A/B test design and statistical significance validation framework</span>
+          <span data-lang="ko">AB 테스트 설계 및 통계적 유의성 검증 프레임워크 구축</span>
+        </li>
+        <li>
+          <span data-lang="ja">定期レポートのPython自動化（月次 → 週次化を実現）</span>
+          <span data-lang="en">Automated periodic reports in Python (shifted from monthly to weekly cadence)</span>
+          <span data-lang="ko">정기 보고서 Python 자동화 (월별 → 주별 전환 실현)</span>
+        </li>
+        <li>
+          <span data-lang="ja">Tableau経営ダッシュボードの設計・導入支援</span>
+          <span data-lang="en">Designed and supported rollout of Tableau management dashboards</span>
+          <span data-lang="ko">Tableau 경영 대시보드 설계 및 도입 지원</span>
+        </li>
       </ul>
       <div class="career-tags">
         <span class="career-tag">Python</span>
@@ -412,9 +532,13 @@
     </div>
   </div>
 
-  <!-- スキル -->
+  <!-- スキルセット -->
   <div class="career-section">
-    <div class="career-section-label">スキルセット</div>
+    <div class="career-section-label">
+      <span data-lang="ja">スキルセット</span>
+      <span data-lang="en">Skills</span>
+      <span data-lang="ko">스킬셋</span>
+    </div>
     <div class="section-box">
       <table class="skills-table">
         <tr>
@@ -447,35 +571,74 @@
           <td>Streamlit / FastAPI / Docker / GitHub Actions</td>
         </tr>
         <tr>
-          <td>言語</td>
           <td>
-            <span class="skill-level-high">韓国語（母語）</span> /
-            <span class="skill-level-high">日本語（準ネイティブ）</span> /
-            英語（ビジネスレベル）
+            <span data-lang="ja">言語</span>
+            <span data-lang="en">Languages</span>
+            <span data-lang="ko">언어</span>
+          </td>
+          <td>
+            <span data-lang="ja">
+              <span class="skill-level-high">韓国語（母語）</span> /
+              <span class="skill-level-high">日本語（準ネイティブ）</span> /
+              英語（ビジネスレベル）
+            </span>
+            <span data-lang="en">
+              <span class="skill-level-high">Korean (Native)</span> /
+              <span class="skill-level-high">Japanese (Near-Native)</span> /
+              English (Business Level)
+            </span>
+            <span data-lang="ko">
+              <span class="skill-level-high">한국어 (모국어)</span> /
+              <span class="skill-level-high">일본어 (준네이티브)</span> /
+              영어 (비즈니스 레벨)
+            </span>
           </td>
         </tr>
       </table>
     </div>
   </div>
 
-  <!-- 現在取り組んでいること -->
+  <!-- 現在の取り組み -->
   <div class="career-section">
-    <div class="career-section-label">現在の取り組み</div>
+    <div class="career-section-label">
+      <span data-lang="ja">現在の取り組み</span>
+      <span data-lang="en">Current Work</span>
+      <span data-lang="ko">현재의 활동</span>
+    </div>
     <div class="section-box">
       <p style="font-size:14px;color:var(--text-muted);line-height:1.9;">
-        OpenAI Agents SDK・Google ADK・LangGraph の3フレームワークを用いて、
-        実際にデプロイ可能なAIエージェントを開発中。
-        各フレームワークの特性を比較しながら、実務課題に最適なアーキテクチャを探求しています。<br><br>
-        詳細は <a href="index.html#agents" style="color:var(--accent);text-decoration:none;">ポートフォリオの AI Agents セクション →</a> をご参照ください。
+        <span data-lang="ja">
+          OpenAI Agents SDK・Google ADK・LangGraph の3フレームワークを用いて、実際にデプロイ可能なAIエージェントを開発中。
+          各フレームワークの特性を比較しながら、実務課題に最適なアーキテクチャを探求しています。<br><br>
+          詳細は <a href="index.html#agents" style="color:var(--accent);text-decoration:none;">ポートフォリオの AI Agents セクション →</a> をご参照ください。
+        </span>
+        <span data-lang="en">
+          Currently developing deployable AI agents across three frameworks — OpenAI Agents SDK, Google ADK, and LangGraph —
+          while comparing their characteristics and exploring the architecture best suited to real-world challenges.<br><br>
+          See the <a href="index.html#agents" style="color:var(--accent);text-decoration:none;">AI Agents section of the portfolio →</a> for details.
+        </span>
+        <span data-lang="ko">
+          OpenAI Agents SDK·Google ADK·LangGraph 3가지 프레임워크를 활용하여 실제로 배포 가능한 AI 에이전트를 개발 중입니다.
+          각 프레임워크의 특성을 비교하며 실무 과제에 최적인 아키텍처를 탐구하고 있습니다.<br><br>
+          자세한 내용은 <a href="index.html#agents" style="color:var(--accent);text-decoration:none;">포트폴리오의 AI Agents 섹션 →</a>을 참조해주세요.
+        </span>
       </p>
     </div>
   </div>
 
   <div class="notice">
-    ※ このページは作業中です。一部フィールドは実際の情報に差し替え予定です。<br>
-    ※ This page is a work in progress. Some fields are placeholders to be updated.
+    <span data-lang="ja">※ このページは作業中です。一部フィールドは実際の情報に差し替え予定です。</span>
+    <span data-lang="en">※ This page is a work in progress. Some fields are placeholders to be updated.</span>
+    <span data-lang="ko">※ 이 페이지는 작업 중입니다. 일부 필드는 실제 정보로 업데이트 예정입니다.</span>
   </div>
 </main>
 
+<script>
+function setLang(lang) {
+  document.body.className = 'lang-' + lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+}
+</script>
 </body>
 </html>
